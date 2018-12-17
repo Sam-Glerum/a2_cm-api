@@ -8,6 +8,12 @@ const jsonModel = require('./models/response/JsonModel');
 const port = process.env.PORT || 3000
 const apiVersion = "v1";
 
+// Set environment
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').load();
+}
+
+
 // Enable CORS headers
 server.use(cors());
 
