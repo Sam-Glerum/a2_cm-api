@@ -38,14 +38,17 @@ router.post('/login', (req, res) => {
 router.post('/register', (req, res) => {
     const registerInfo = req.body;
     if (!checkObjects.isValidRegistration(registerInfo)) {
-        res.status(412).json(new jsonModel("/api/login", "POST", 412, "v1", "Request body properties are invalid or missing"));
+        res.status(412).json(new jsonModel("/api/register", "POST", 412, "v1", "Request body properties are invalid or missing"));
     }
-    try {
-    const username = registerInfo.username.trim().toLowerCase();
-    const email = registerInfo.email.trim().toLowerCase();
-    const password = registerInfo.password.trim();
 
-    userRepo.createUser(username, email, password, res);
+    try {
+        // Get the properties from the request body
+        const username = registerInfo.username.trim().toLowerCase();
+        const email = registerInfo.email.trim().toLowerCase();
+        const password = registerInfo.password.trim();
+
+        // Call the createUser method to add a user to the database
+        userRepo.createUser(username, email, password, res);
     } catch (error) {
         console.log(error);
     }
