@@ -43,4 +43,29 @@ module.exports = class userRepo {
                 res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, apiVersion, "Something went wrong. Please try again."));
             })
     }
+
+    static login(usernameParam, passwordParam, res) {
+        const reqUrl = "/api/login";
+        const httpMethod = "POST";
+        const apiVersion = "v1";
+
+        // Search the database for the supplied username
+        User.findOne({username: usernameParam})
+            .then((user) => {
+                // Check if the supplied password is the same as the user's password
+                if (user.password === passwordParam) {
+                    // Assign a token to the user
+                    let token = authentication.encodeToken(usernameParam);
+                    res.status(200).json({
+                        response: new jsonModel(reqUrl, httpMethod, 200, apiVersion, "You have succesfully logged in"),
+                        token: token
+                    });
+                } else {
+                    res.status(401).json(new jsonModel(reqUrl, httpMethod, 401, apiVersion, "Password is incorrect"));
+                }
+            })
+            .catch(() => {
+                res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, apiVersion, "User not found"));
+            })
+    }
 };
