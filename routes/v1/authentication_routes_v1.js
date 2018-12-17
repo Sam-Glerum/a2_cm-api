@@ -7,6 +7,8 @@ const authentication = require('../../authentication/authentication');
 const jsonModel = require('../../models/response/JsonModel');
 // Validation imports
 const checkObjects = require('../../models/validation/CheckObjects');
+// Repository imports
+const userRepo = require('../../data/repository/userRepo');
 
 // Route that is accessed by all requests to check if the user is authenticated to the server
 router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
@@ -29,22 +31,24 @@ router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
 
 // Login route
 router.post('/login', (req, res) => {
-    const registerInfo = req.body;
-    if (!checkObjects.isValidRegistration(registerInfo)) {
-        res.status(412).json(new jsonModel("/api/login", "POST", 412, "v1", "Request body properties are invalid or missing"));
-    }
-
-    const username = registerInfo.username.trim().toLowerCase();
-    const email = registerInfo.email.trim().toLowerCase();
-    const password = registerInfo.password.trim();
-
-    //TODO setup UserRepo and add createUser() method
 
 });
 
 // Registration route
 router.post('/register', (req, res) => {
+    const registerInfo = req.body;
+    if (!checkObjects.isValidRegistration(registerInfo)) {
+        res.status(412).json(new jsonModel("/api/login", "POST", 412, "v1", "Request body properties are invalid or missing"));
+    }
+    try {
+    const username = registerInfo.username.trim().toLowerCase();
+    const email = registerInfo.email.trim().toLowerCase();
+    const password = registerInfo.password.trim();
 
+    userRepo.createUser(username, email, password, res);
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 module.exports = router;

@@ -6,6 +6,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 // Model imports
 const jsonModel = require('./models/response/JsonModel');
+// Parsing imports
+const bodyparser = require('body-parser');
 // Constant declarations
 const port = process.env.PORT || 3000
 const apiVersion = "v1";
@@ -14,6 +16,12 @@ const apiVersion = "v1";
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').load();
 }
+
+// Load body-parser to read the body from requests
+server.use(bodyparser.json());
+
+// Enable CORS headers
+server.use(cors());
 
 const DATABASE_NAME = process.env.dbName;
 const dbUser = process.env.dbUser;
@@ -26,9 +34,6 @@ mongoose.connect(CONNECTION_STRING, {useNewUrlParser: true});
 mongoose.connection.once('open', () => {
     console.log("Connected to the database " + DATABASE_NAME);
 });
-
-// Enable CORS headers
-server.use(cors());
 
 /*
 Loading routes
