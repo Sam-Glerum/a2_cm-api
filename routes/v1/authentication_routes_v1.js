@@ -31,6 +31,21 @@ router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
 
 // Login route
 router.post('/login', (req, res) => {
+    const loginInfo = req.body;
+    if (!checkObjects.isValidLogin(loginInfo)) {
+        res.status(412).json(new jsonModel("/api/login", "POST", 412, "v1", "Request body properties are invalid or missing"));
+    }
+
+    try {
+        // Get the properties from the request body
+        let username = loginInfo.username.trim().toLowerCase();
+        let password = loginInfo.password.trim();
+
+        // Call the login method to login to the api
+        userRepo.login(username, password, res);
+    } catch (error) {
+        console.log(error);
+    }
 
 });
 
