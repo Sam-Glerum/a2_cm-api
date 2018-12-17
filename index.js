@@ -1,11 +1,21 @@
 // Express imports
 const express = require('express');
 const server = express();
+const cors = require('cors');
 // Model imports
 const jsonModel = require('./models/response/JsonModel');
 // Constant declarations
 const port = process.env.PORT || 3000
 const apiVersion = "v1";
+
+// Enable CORS headers
+server.use(cors());
+
+/*
+Loading routes
+*/
+// Load Authentication routes
+server.use('/api', require('./routes/v1/authentication_routes_v1'));
 
 server.get("/", (req, res) => {
     res.redirect("/api");
