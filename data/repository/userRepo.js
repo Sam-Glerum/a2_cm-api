@@ -28,7 +28,7 @@ module.exports = class userRepo {
                             // Create a token based on the supplied username
                             let token = authentication.encodeToken(usernameParam);
                             res.status(201).json({
-                                response: new jsonModel(reqUrl, httpMethod, "User " + user.username + " has been created"),
+                                response: new jsonModel(reqUrl, httpMethod, 201, "User " + user.username + " has been created"),
                                 token: token
                             });
                         })
