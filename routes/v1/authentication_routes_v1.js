@@ -10,6 +10,7 @@ const checkObjects = require('../../models/validation/CheckObjects');
 // Repository imports
 const userRepo = require('../../data/repository/userRepo');
 
+
 // Route that is accessed by all requests to check if the user is authenticated to the server
 router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
     // Get token from headers
@@ -33,7 +34,7 @@ router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
 router.post('/login', (req, res) => {
     const loginInfo = req.body;
     if (!checkObjects.isValidLogin(loginInfo)) {
-        res.status(412).json(new jsonModel("/api/login", "POST", 412, "v1", "Request body properties are invalid or missing"));
+        res.status(412).json(new jsonModel("/api/login", "POST", 412, "Request body properties are invalid or missing"));
     }
 
     try {
@@ -53,7 +54,7 @@ router.post('/login', (req, res) => {
 router.post('/register', (req, res) => {
     const registerInfo = req.body;
     if (!checkObjects.isValidRegistration(registerInfo)) {
-        res.status(412).json(new jsonModel("/api/register", "POST", 412, "v1", "Request body properties are invalid or missing"));
+        res.status(412).json(new jsonModel("/api/register", "POST", 412, "Request body properties are invalid or missing"));
     }
 
     try {

@@ -10,7 +10,6 @@ const jsonModel = require('./models/response/JsonModel');
 const bodyparser = require('body-parser');
 // Constant declarations
 const port = process.env.PORT || 3000;
-const apiVersion = "v1";
 
 // Set environment
 if (process.env.NODE_ENV !== 'production') {
@@ -46,7 +45,7 @@ server.get("/", (req, res) => {
 });
 
 server.get("/api", (req, res) => {
-    res.status(200).json(new jsonModel("/api", "GET", 200, apiVersion, "Welcome to the a2_cm api"));
+    res.status(200).json(new jsonModel("/api", "GET", 200, "Welcome to the a2_cm api"));
 });
 
 

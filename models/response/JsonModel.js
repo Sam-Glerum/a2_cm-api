@@ -1,6 +1,9 @@
+const config = require('../../config/config');
+const apiVersion = config.api_version;
+
 class JsonResponseModel {
 
-    constructor(url, method, statusCode, apiVersion, message) {
+    constructor(url, method, statusCode, message) {
         this.url = url;
         this.method = method;
         this.statusCode = statusCode;

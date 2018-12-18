@@ -28,19 +28,19 @@ module.exports = class userRepo {
                             // Create a token based on the supplied username
                             let token = authentication.encodeToken(usernameParam);
                             res.status(201).json({
-                                response: new jsonModel(reqUrl, httpMethod, 201, apiVersion, "User " + user.username + " has been created"),
+                                response: new jsonModel(reqUrl, httpMethod, "User " + user.username + " has been created"),
                                 token: token
                             });
                         })
                         .catch(() => {
-                            res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, apiVersion, "Something went wrong. User " + usernameParam + " has not been created"));
+                            res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong. User " + usernameParam + " has not been created"));
                         })
                 } else {
                     res.status(409).json(new jsonModel(reqUrl, httpMethod, 409, "User " + user.username + " already exists"));
                 }
             })
             .catch(() => {
-                res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, apiVersion, "Something went wrong. Please try again."));
+                res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong. Please try again."));
             })
     }
 
@@ -57,15 +57,15 @@ module.exports = class userRepo {
                     // Assign a token to the user
                     let token = authentication.encodeToken(usernameParam);
                     res.status(200).json({
-                        response: new jsonModel(reqUrl, httpMethod, 200, apiVersion, "You have succesfully logged in"),
+                        response: new jsonModel(reqUrl, httpMethod, 200, "You have succesfully logged in"),
                         token: token
                     });
                 } else {
-                    res.status(401).json(new jsonModel(reqUrl, httpMethod, 401, apiVersion, "Password is incorrect"));
+                    res.status(401).json(new jsonModel(reqUrl, httpMethod, 401, "Password is incorrect"));
                 }
             })
             .catch(() => {
-                res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, apiVersion, "User not found"));
+                res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "User not found"));
             })
     }
 };
