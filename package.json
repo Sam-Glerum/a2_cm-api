@@ -1,0 +1,35 @@
+{
+  "name": "csfwp-api",
+  "version": "1.0.0",
+  "description": "A2-CM IVT2.2 CSFWP",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "isemail": "^3.2.0",
+    "jwt-simple": "^0.5.5",
+    "mocha": "^5.2.0",
+    "moment": "^2.23.0",
+    "mongoose": "^5.4.0",
+    "nodemon": "^1.18.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sam-Glerum/a2_cm-api.git"
+  },
+  "author": "btaks, kzegelaar, rvoesenek, sglerum",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sam-Glerum/a2_cm-api/issues"
+  },
+  "homepage": "https://github.com/Sam-Glerum/a2_cm-api#readme"
+}

@@ -9,7 +9,7 @@ const jsonModel = require('./models/response/JsonModel');
 // Parsing imports
 const bodyparser = require('body-parser');
 // Constant declarations
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 const apiVersion = "v1";
 
 // Set environment
