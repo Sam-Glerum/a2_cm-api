@@ -47,13 +47,9 @@ Loading routes
 // Load Authentication routes
 server.use('/api', require('./routes/v1/authentication_routes_v1'));
 
-// server.get("/", (req, res) => {
-//     res.redirect("/api");
-// });
-//
-// server.get("/api", (req, res) => {
-//     res.status(200).json(new jsonModel("/api", "GET", 200, "Welcome to the a2_cm api"));
-// });
+server.get("/", (req, res) => {
+    res.redirect("/api");
+});
 
 
 server.listen(port, () => {
