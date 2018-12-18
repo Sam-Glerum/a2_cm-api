@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const jsonModel = require('./models/response/JsonModel');
 // Parsing imports
 const bodyparser = require('body-parser');
-// Constant declarations
+// Constant declarations -
 const port = process.env.PORT || 3000;
 
 // Set environment
