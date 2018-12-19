@@ -35,12 +35,8 @@ mongoose.connection.once('open', () => {
     console.log("Connected to the database " + DATABASE_NAME);
 });
 
-sqlConnection.connectSqlDb();
-
-const request = new sql.Request();
-request.on('info', info => {
-    console.log(info);
-});
+// Establish a connection with the cm-a2 SQL database (hosted on Azure)
+sqlConnection.connectToSqlDb();
 
 /*
 Loading routes
