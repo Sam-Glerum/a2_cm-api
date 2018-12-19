@@ -9,7 +9,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:paymentID', (req, res) => {
-    res.send("Get single payment");
+    let paymentId = req.params.paymentID;
+    paymentRepo.getPaymentByID(paymentId, res);
 });
 
 

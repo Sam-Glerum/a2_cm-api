@@ -14,8 +14,25 @@ module.exports = class PaymentRepo {
         sqlRequest.query('select * from Payments', (error, recordSet) => {
             if (error) {
                 console.log(error);
+                res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No payments found"));
             }
-            res.status(200).json(recordSet);
+            res.status(200).json(recordSet.recordset);
+        })
+    }
+
+    static getPaymentByID(paymentID, res) {
+        const reqUrl = '/api/payments/' + paymentID;
+        const httpMethod = 'POST';
+
+        let sqlRequest = new sql.Request();
+
+        sqlRequest.query('select * from Payments where ID = ' + paymentID, (error, recordSet) => {
+            if (error) {
+                console.log(error);
+                res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Payment " + paymentID + " not found"));
+            }
+
+            res.status(200).json(recordSet.recordset);
         })
     }
 };
