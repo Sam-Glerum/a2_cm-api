@@ -10,6 +10,8 @@ router.get('/', (req, res) => {
 
 router.get('/:orderID', (req, res) => {
     let orderId = req.params.orderID;
+
+    orderRepo.getOrderByID(orderId, res);
 });
 
 
