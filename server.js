@@ -45,6 +45,8 @@ Loading routes
 server.use('/api', require('./routes/v1/authentication_routes_v1'));
 // Load Payment routes
 server.use('/api/payments', require('./routes/v1/payment_routes_v1'));
+// Load Order routes
+server.use('/api/orders', require('./routes/v1/order_routes_v1'));
 
 server.get("/", (req, res) => {
     res.redirect("/api");
