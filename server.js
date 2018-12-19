@@ -4,6 +4,8 @@ const server = express();
 const cors = require('cors');
 // Database imports
 const mongoose = require('mongoose');
+const sql = require('mssql');
+const sqlConnection = require('./data/database/SqlDb');
 // Model imports
 const jsonModel = require('./models/response/JsonModel');
 // Parsing imports
@@ -21,14 +23,6 @@ server.use(bodyparser.json());
 
 server.use(cors());
 
-// //CORS headers
-// server.use(function(req, res, next) {
-//     res.setHeader('Access-Control-Allow-Origin', process.env.ALLOW_ORIGIN || 'http://localhost:4200');
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, X-Access-Token');
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-// });
-
 const DATABASE_NAME = process.env.dbName;
 const dbUser = process.env.dbUser;
 const dbPassword = process.env.dbPassword;
@@ -39,6 +33,13 @@ mongoose.connect(CONNECTION_STRING, {useNewUrlParser: true});
 // Print a message after the connection with the database has been made
 mongoose.connection.once('open', () => {
     console.log("Connected to the database " + DATABASE_NAME);
+});
+
+sqlConnection.connectSqlDb();
+
+const request = new sql.Request();
+request.on('info', info => {
+    console.log(info);
 });
 
 /*
