@@ -16,7 +16,10 @@ module.exports = class PaymentRepo {
                 console.log(error);
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No payments found"));
             }
-            res.status(200).json(recordSet.recordset);
+            res.status(200).json({
+                response: new jsonModel(reqUrl, httpMethod, 200, "GET all Payments"),
+                payments: recordSet.recordset
+            });
         })
     }
 
@@ -32,7 +35,9 @@ module.exports = class PaymentRepo {
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Payment " + paymentID + " not found"));
             }
 
-            res.status(200).json(recordSet.recordset);
+            res.status(200).json({
+                response: new jsonModel(reqUrl, httpMethod, 200, "Payment " + paymentID),
+                payment: recordSet.recordset});
         })
     }
 };
