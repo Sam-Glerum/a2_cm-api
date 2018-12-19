@@ -1,16 +1,23 @@
+// Imports...
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../server');
 const User = require('../data/schema/user');
 const mongoose = require('mongoose');
 
+// Setup chai for tests and requests being send through chai-http.
 chai.should();
 chai.use(chaiHttp);
 
+// default tester credentials.
 const TEST_USER_NAME = 'tester';
 const TEST_USER_PASS = 'soepersiekret';
 
+// CONTAINS REGISTRATION & LOGIN TESTS.
 describe('Registration & Login:', () => {
+
+    // Test database is emptied between tests,
+    // the beforeEach statement below adds a default user to the database before every test and after the database is emptied.
     beforeEach((done) => {
         const testUser = new User({
             username: TEST_USER_NAME,
@@ -24,6 +31,7 @@ describe('Registration & Login:', () => {
             })
     });
 
+    // TESTS FOR REGISTER ROUTE.
     it('REGISTER: \nShould return an error on GET request.', (done) => {
         chai.request(server)
             .get('/api/register')
@@ -44,6 +52,16 @@ describe('Registration & Login:', () => {
                 res.should.not.have.status(200);
                 res.body.should.be.a('object');
                 res.body.should.have.property('message');
+                done();
+            });
+    });
+
+    // TESTS FOR LOGIN ROUTE.
+    it('LOGIN: \nShould return an error on GET request.', (done) => {
+        chai.request(server)
+            .get('/api/login')
+            .end((err, res) => {
+                res.should.have.status(404);
                 done();
             });
     });
@@ -77,6 +95,4 @@ describe('Registration & Login:', () => {
                 done();
             });
     });
-
-    it('LOGIN: \nShould ')
 });
