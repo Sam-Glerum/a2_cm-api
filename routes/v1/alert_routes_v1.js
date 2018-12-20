@@ -12,3 +12,5 @@ router.get('/:alertID', (req, res) => {
     let alertID = req.params.alertID;
     alertRepo.getAlertByID(alertID, 'GET', res);
 });
+
+module.exports = router;
