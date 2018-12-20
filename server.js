@@ -4,6 +4,8 @@ const server = express();
 const cors = require('cors');
 // Database imports
 const mongoose = require('mongoose');
+const sql = require('mssql');
+const sqlConnection = require('./data/database/SqlDb');
 // Model imports
 const jsonModel = require('./models/response/JsonModel');
 // Parsing imports
@@ -21,14 +23,6 @@ server.use(bodyparser.json());
 
 server.use(cors());
 
-// //CORS headers
-// server.use(function(req, res, next) {
-//     res.setHeader('Access-Control-Allow-Origin', process.env.ALLOW_ORIGIN || 'http://localhost:4200');
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, X-Access-Token');
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-// });
-
 const DATABASE_NAME = process.env.dbName;
 const dbUser = process.env.dbUser;
 const dbPassword = process.env.dbPassword;
@@ -41,11 +35,20 @@ mongoose.connection.once('open', () => {
     console.log("Connected to the database " + DATABASE_NAME);
 });
 
+// Establish a connection with the cm-a2 SQL database (hosted on Azure)
+sqlConnection.connectToSqlDb();
+
 /*
 Loading routes
 */
 // Load Authentication routes
 server.use('/api', require('./routes/v1/authentication_routes_v1'));
+// Load Payment routes
+server.use('/api/payments', require('./routes/v1/payment_routes_v1'));
+// Load Order routes
+server.use('/api/orders', require('./routes/v1/order_routes_v1'));
+// Load Merchant routes
+server.use('/api/merchants', require('./routes/v1/merchant_routes_v1'));
 
 server.get("/", (req, res) => {
     res.redirect("/api");
