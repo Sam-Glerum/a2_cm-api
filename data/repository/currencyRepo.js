@@ -32,7 +32,7 @@ module.exports = class organizationRepo {
         let reqUrl = '/api/currencies/' + currencyCode;
 
         try {
-            await sqlRequest.query('select * from Currencies where ID = \'' + currencyCode + '\'', (error, recordSet) => {
+            await sqlRequest.query('select * from Currencies where CurrencyCode = \'' + currencyCode + '\'', (error, recordSet) => {
                 if (error) {
                     console.log(error);
                     res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Currency " + currencyCode + " not found"));

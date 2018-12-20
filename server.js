@@ -59,6 +59,8 @@ server.use('/api/alerts', require('./routes/v1/alert_routes_v1'));
 server.use('/api/countries', require('./routes/v1/country_routes_v1'));
 // Load Organization routes
 server.use('/api/organizations', require('./routes/v1/organization_routes_v1'));
+// Load Currency routes
+server.use('/api/currencies', require('./routes/v1/currency_routes_v1'));
 
 server.get("/", (req, res) => {
     res.redirect("/api");
