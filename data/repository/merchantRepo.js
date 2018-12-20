@@ -20,14 +20,13 @@ module.exports = class orderRepo {
                 response: new jsonModel(reqUrl, httpMethod, 200, "Retrieved all merchants"),
                 merchants: recordSet.recordset
             })
-
         })
     }
 
     static async getMerchantByID(merchantID, httpMethod, res) {
         const reqUrl = '/api/merchants/' + merchantID;
 
-        sqlRequest.query('select * from Merchants where ID = ' + merchantID, (error, recordSet) => {
+        sqlRequest.query('select * from Merchants where ID = \'' + merchantID + '\'', (error, recordSet) => {
             if (error) {
                 console.log(error);
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Merchant " + merchantID + " not found"));
@@ -38,6 +37,5 @@ module.exports = class orderRepo {
                 merchant: recordSet.recordset
             })
         })
-
     }
 };
