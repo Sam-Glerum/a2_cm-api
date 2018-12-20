@@ -8,10 +8,10 @@ router.get('/', (req, res) => {
     countryRepo.getAllCountries('GET', res);
 });
 
-router.get('/:countryID', (req, res) => {
-    let countryID = req.params.countryID;
+router.get('/:isoCode', (req, res) => {
+    let isoCode = req.params.isoCode.toUpperCase();
 
-    countryRepo.getCountryByID(countryID, 'GET', res);
+    countryRepo.getCountryByIsoCode(isoCode, 'GET', res);
 });
 
 module.exports = router;

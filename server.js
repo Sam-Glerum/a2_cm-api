@@ -51,6 +51,8 @@ server.use('/api/orders', require('./routes/v1/order_routes_v1'));
 server.use('/api/merchants', require('./routes/v1/merchant_routes_v1'));
 // Load Alert routes
 server.use('/api/alerts', require('./routes/v1/alert_routes_v1'));
+// Load Country routes
+server.use('/api/countries', require('./routes/v1/country_routes_v1'));
 
 server.get("/", (req, res) => {
     res.redirect("/api");

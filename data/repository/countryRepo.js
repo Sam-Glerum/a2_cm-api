@@ -3,7 +3,7 @@ const sql = require('mssql');
 // Response model import
 const jsonModel = require('../../models/response/JsonModel');
 
-const sqlRequest = sql.Request();
+const sqlRequest = new sql.Request();
 
 module.exports = class countryRepo {
 
@@ -27,18 +27,18 @@ module.exports = class countryRepo {
         }
     }
 
-    static async getCountryByID(countryID, httpMethod, res) {
-        let reqUrl = '/api/countries/' + countryID;
+    static async getCountryByIsoCode(isoCode, httpMethod, res) {
+        let reqUrl = '/api/countries/' + isoCode;
 
         try {
-            await sqlRequest.query('select * from Countries where ID = ' + countryID, (error, recordSet) => {
+            await sqlRequest.query('select * from Countries where IsoCode = \'' + isoCode + '\'', (error, recordSet) => {
                 if (error) {
                     console.log(error);
-                    res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Country " + countryID + " not found"));
+                    res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Country " + isoCode + " not found"));
                 }
 
                 res.status(200).json({
-                    response: new jsonModel(reqUrl, httpMethod, 200, "GET country " + countryID),
+                    response: new jsonModel(reqUrl, httpMethod, 200, "GET country " + isoCode),
                     country: recordSet.recordset
                 })
             })
