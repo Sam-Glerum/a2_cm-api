@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:paymentMethodName', (req, res) => {
-    let paymentMethodName = req.params.paymentMethodName;
+    let paymentMethodName = req.params.paymentMethodName.toUpperCase();
 
     paymentMethodRepo.getPaymentMethodByName(paymentMethodName, 'GET', res);
 });
