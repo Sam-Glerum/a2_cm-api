@@ -55,6 +55,8 @@ server.use('/api/merchantCategories', require('./routes/v1/merchantCategoryCode_
 server.use('/api/alerts', require('./routes/v1/alert_routes_v1'));
 // Load Country routes
 server.use('/api/countries', require('./routes/v1/country_routes_v1'));
+// Load Organization routes
+server.use('/api/organizations', require('./routes/v1/organization_routes_v1'));
 
 server.get("/", (req, res) => {
     res.redirect("/api");
