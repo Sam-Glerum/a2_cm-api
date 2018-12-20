@@ -7,9 +7,8 @@ const authentication = require('../../authentication/authentication');
 
 module.exports = class userRepo {
 
-    static createUser(usernameParam, emailParam, passwordParam, res) {
+    static createUser(usernameParam, emailParam, passwordParam, httpMethod, res) {
         const reqUrl = "/api/register";
-        const httpMethod = "POST";
         const apiVersion = "v1";
         // Search the database for the supplied username
         User.findOne({username: usernameParam})
@@ -44,10 +43,8 @@ module.exports = class userRepo {
             })
     }
 
-    static login(usernameParam, passwordParam, res) {
+    static login(usernameParam, passwordParam, httpMethod, res) {
         const reqUrl = "/api/login";
-        const httpMethod = "POST";
-        const apiVersion = "v1";
 
         // Search the database for the supplied username
         User.findOne({username: usernameParam})

@@ -43,7 +43,7 @@ router.post('/login', (req, res) => {
         let password = loginInfo.password.trim();
 
         // Call the login method to login to the api
-        userRepo.login(username, password, res);
+        userRepo.login(username, password, 'POST', res);
     } catch (error) {
         console.log(error);
     }
@@ -64,7 +64,7 @@ router.post('/register', (req, res) => {
         const password = registerInfo.password.trim();
 
         // Call the createUser method to add a user to the database
-        userRepo.createUser(username, email, password, res);
+        userRepo.createUser(username, email, password, 'POST', res);
     } catch (error) {
         console.log(error);
     }

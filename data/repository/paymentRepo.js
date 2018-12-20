@@ -5,9 +5,8 @@ const jsonModel = require('../../models/response/JsonModel');
 
 module.exports = class PaymentRepo {
 
-    static getAllPayments(res) {
+    static getAllPayments(httpMethod, res) {
         const reqUrl = '/api/payments';
-        const httpMethod = 'POST';
 
         let sqlRequest = new sql.Request();
 
@@ -23,9 +22,8 @@ module.exports = class PaymentRepo {
         })
     }
 
-    static getPaymentByID(paymentID, res) {
+    static getPaymentByID(paymentID, httpMethod, res) {
         const reqUrl = '/api/payments/' + paymentID;
-        const httpMethod = 'POST';
 
         let sqlRequest = new sql.Request();
 
