@@ -30,7 +30,7 @@ module.exports = class merchantCategoryRepo {
     static async getCategoryInfoByCategoryCode(categoryCode, httpMethod, res) {
         let reqUrl = '/api/merchantCategories/' + categoryCode;
         try {
-            await sqlRequest.query('select * from MerchantCategoryCodes where Mcc = \'' + isoCode + '\'', (error, recordSet) => {
+            await sqlRequest.query('select * from MerchantCategoryCodes where Mcc = ' + categoryCode, (error, recordSet) => {
                 if (error) {
                     console.log(error);
                     res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Merchant category code " + categoryCode + "not found"));
