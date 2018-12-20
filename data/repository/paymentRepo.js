@@ -5,12 +5,12 @@ const jsonModel = require('../../models/response/JsonModel');
 
 module.exports = class PaymentRepo {
 
-    static getAllPayments(httpMethod, res) {
+    static async getAllPayments(httpMethod, res) {
         const reqUrl = '/api/payments';
 
         let sqlRequest = new sql.Request();
 
-        sqlRequest.query('select * from Payments', (error, recordSet) => {
+        await sqlRequest.query('select * from Payments', (error, recordSet) => {
             if (error) {
                 console.log(error);
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No payments found"));
@@ -22,12 +22,12 @@ module.exports = class PaymentRepo {
         })
     }
 
-    static getPaymentByID(paymentID, httpMethod, res) {
+    static async getPaymentByID(paymentID, httpMethod, res) {
         const reqUrl = '/api/payments/' + paymentID;
 
         let sqlRequest = new sql.Request();
 
-        sqlRequest.query('select * from Payments where ID = ' + paymentID, (error, recordSet) => {
+        await sqlRequest.query('select * from Payments where ID = ' + paymentID, (error, recordSet) => {
             if (error) {
                 console.log(error);
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Payment " + paymentID + " not found"));

@@ -11,7 +11,7 @@ module.exports = class alertRepo {
     static async getAllALerts(httpMethod, res) {
         const reqUrl = '/api/alerts';
 
-        sqlRequest.query('select * from Alerts', (error, recordSet) => {
+        await sqlRequest.query('select * from Alerts', (error, recordSet) => {
             if (error) {
                 console.log(error);
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No alerts found"));
@@ -27,7 +27,7 @@ module.exports = class alertRepo {
     static async getAlertByID(alertID, httpMethod, res) {
         const reqUrl = '/api/alerts/' + alertID;
 
-        sqlRequest.query('select * from Alerts where ID = ' + alertID, (error, recordSet) => {
+        await sqlRequest.query('select * from Alerts where ID = ' + alertID, (error, recordSet) => {
             if (error) {
                 console.log(error);
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Alert " + alertID + " not found"));

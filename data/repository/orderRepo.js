@@ -10,7 +10,7 @@ module.exports = class orderRepo {
     static async getAllOrders(httpMethod, res) {
         const reqUrl = '/api/orders';
 
-        sqlRequest.query('select * from Orders', (error, recordSet) => {
+        await sqlRequest.query('select * from Orders', (error, recordSet) => {
             if (error) {
                 console.log(error);
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No orders found"));
@@ -26,7 +26,7 @@ module.exports = class orderRepo {
     static async getOrderByID(orderID, httpMethod, res) {
         const reqUrl = '/api/orders/' + orderID;
 
-        sqlRequest.query('select * from Orders where ID = ' + orderID, (error , recordSet) => {
+        await sqlRequest.query('select * from Orders where ID = ' + orderID, (error , recordSet) => {
             if (error) {
                 console.log(error);
             }
