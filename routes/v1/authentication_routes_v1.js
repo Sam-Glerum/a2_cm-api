@@ -35,19 +35,19 @@ router.post('/login', (req, res) => {
     const loginInfo = req.body;
     if (!checkObjects.isValidLogin(loginInfo)) {
         res.status(412).json(new jsonModel("/api/login", "POST", 412, "Request body properties are invalid or missing"));
+    } else {
+
+        try {
+            // Get the properties from the request body
+            let username = loginInfo.username.trim().toLowerCase();
+            let password = loginInfo.password.trim();
+
+            // Call the login method to login to the api
+            userRepo.login(username, password, res);
+        } catch (error) {
+            console.log(error);
+        }
     }
-
-    try {
-        // Get the properties from the request body
-        let username = loginInfo.username.trim().toLowerCase();
-        let password = loginInfo.password.trim();
-
-        // Call the login method to login to the api
-        userRepo.login(username, password, res);
-    } catch (error) {
-        console.log(error);
-    }
-
 });
 
 // Registration route
@@ -55,18 +55,19 @@ router.post('/register', (req, res) => {
     const registerInfo = req.body;
     if (!checkObjects.isValidRegistration(registerInfo)) {
         res.status(412).json(new jsonModel("/api/register", "POST", 412, "Request body properties are invalid or missing"));
-    }
+    } else {
 
-    try {
-        // Get the properties from the request body
-        const username = registerInfo.username.trim().toLowerCase();
-        const email = registerInfo.email.trim().toLowerCase();
-        const password = registerInfo.password.trim();
+        try {
+            // Get the properties from the request body
+            const username = registerInfo.username.trim().toLowerCase();
+            const email = registerInfo.email.trim().toLowerCase();
+            const password = registerInfo.password.trim();
 
-        // Call the createUser method to add a user to the database
-        userRepo.createUser(username, email, password, res);
-    } catch (error) {
-        console.log(error);
+            // Call the createUser method to add a user to the database
+            userRepo.createUser(username, email, password, res);
+        } catch (error) {
+            console.log(error);
+        }
     }
 });
 

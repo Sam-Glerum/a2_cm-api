@@ -49,7 +49,7 @@ describe('Registration & Login:', () => {
                 password: "R4dicalFist"
             })
             .end((err, res) => {
-                res.should.not.have.status(200);
+                res.should.not.have.status(200);            // OK status, does not check whether the route reaches the repository or not.
                 res.body.should.be.a('object');
                 res.body.should.have.property('message');
                 done();
