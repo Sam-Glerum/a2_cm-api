@@ -7,12 +7,11 @@ const authentication = require('../../authentication/authentication');
 
 module.exports = class userRepo {
 
-    static createUser(usernameParam, emailParam, passwordParam, res) {
+    static async createUser(usernameParam, emailParam, passwordParam, httpMethod, res) {
         const reqUrl = "/api/register";
-        const httpMethod = "POST";
         const apiVersion = "v1";
         // Search the database for the supplied username
-        User.findOne({username: usernameParam})
+        await User.findOne({username: usernameParam})
             .then((user) => {
                 // Check if the username is already present in the database
                 if (user === null) {
@@ -44,13 +43,11 @@ module.exports = class userRepo {
             })
     }
 
-    static login(usernameParam, passwordParam, res) {
+    static async login(usernameParam, passwordParam, httpMethod, res) {
         const reqUrl = "/api/login";
-        const httpMethod = "POST";
-        const apiVersion = "v1";
 
         // Search the database for the supplied username
-        User.findOne({username: usernameParam})
+        await User.findOne({username: usernameParam})
             .then((user) => {
                 // Check if the supplied password is the same as the user's password
                 if (user.password === passwordParam) {

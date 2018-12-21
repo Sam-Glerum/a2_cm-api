@@ -45,10 +45,22 @@ Loading routes
 server.use('/api', require('./routes/v1/authentication_routes_v1'));
 // Load Payment routes
 server.use('/api/payments', require('./routes/v1/payment_routes_v1'));
+// Load Payment Method routes
+server.use('/api/paymentMethods', require('./routes/v1/paymentMethod_routes_v1'));
 // Load Order routes
 server.use('/api/orders', require('./routes/v1/order_routes_v1'));
 // Load Merchant routes
 server.use('/api/merchants', require('./routes/v1/merchant_routes_v1'));
+// Load MerchantCategoryCode routes
+server.use('/api/merchantCategories', require('./routes/v1/merchantCategoryCode_routes_v1'));
+// Load Alert routes
+server.use('/api/alerts', require('./routes/v1/alert_routes_v1'));
+// Load Country routes
+server.use('/api/countries', require('./routes/v1/country_routes_v1'));
+// Load Organization routes
+server.use('/api/organizations', require('./routes/v1/organization_routes_v1'));
+// Load Currency routes
+server.use('/api/currencies', require('./routes/v1/currency_routes_v1'));
 
 server.get("/", (req, res) => {
     res.redirect("/api");

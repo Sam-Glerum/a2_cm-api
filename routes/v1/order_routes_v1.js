@@ -5,13 +5,13 @@ const router = express.Router();
 const orderRepo = require('../../data/repository/orderRepo');
 
 router.get('/', (req, res) => {
-    orderRepo.getAllOrders(res);
+    orderRepo.getAllOrders('GET',res);
 });
 
 router.get('/:orderID', (req, res) => {
     let orderId = req.params.orderID;
 
-    orderRepo.getOrderByID(orderId, res);
+    orderRepo.getOrderByID(orderId, 'GET', res);
 });
 
 
