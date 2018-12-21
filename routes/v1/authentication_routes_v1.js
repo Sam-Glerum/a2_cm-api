@@ -68,7 +68,7 @@ router.post('/register', (req, res) => {
             const password = registerInfo.password.trim();
 
             // Call the createUser method to add a user to the database
-            userRepo.createUser(username, email, password, res);
+            userRepo.createUser(username, email, password, "POST", res);
         } catch (error) {
             console.log(error);
         }

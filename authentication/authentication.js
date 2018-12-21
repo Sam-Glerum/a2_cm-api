@@ -21,6 +21,7 @@ function decodeToken(token, callback) {
 
         // Check if the token is expired
         if (now > payload.exp) {
+            console.log(now + ' - ' + payload.exp);
             console.log('Token has expired');
         }
 
