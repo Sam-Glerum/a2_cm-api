@@ -10,6 +10,10 @@ const checkObjects = require('../../models/validation/CheckObjects');
 // Repository imports
 const userRepo = require('../../data/repository/userRepo');
 
+router.use("/", (req, res, next) => {
+    res.contentType("application/json");
+    next();
+});
 
 // Route that is accessed by all requests to check if the user is authenticated to the server
 router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
@@ -43,7 +47,7 @@ router.post('/login', (req, res) => {
             let password = loginInfo.password.trim();
 
             // Call the login method to login to the api
-            userRepo.login(username, password, res);
+            userRepo.login(username, password, "POST", res);
         } catch (error) {
             console.log(error);
         }
