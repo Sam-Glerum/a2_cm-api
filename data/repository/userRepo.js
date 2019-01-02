@@ -8,6 +8,8 @@ const authentication = require('../../authentication/authentication');
 module.exports = class userRepo {
 
     static async createUser(usernameParam, emailParam, passwordParam, httpMethod, res) {
+        let BCRYPT_SALT_ROUNDS = 12;
+
         const reqUrl = "/api/register";
         const apiVersion = "v1";
         // Search the database for the supplied username
