@@ -4,6 +4,8 @@ const User = require('../schema/user');
 const jsonModel = require('../../models/response/JsonModel');
 // Authentication import
 const authentication = require('../../authentication/authentication');
+// Encryption import
+const bcrypt = require('bcrypt');
 
 module.exports = class userRepo {
 
