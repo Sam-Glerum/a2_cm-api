@@ -5,12 +5,12 @@ const jsonModel = require('../../models/response/JsonModel');
 // Authentication import
 const authentication = require('../../authentication/authentication');
 // Encryption import
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 
 module.exports = class userRepo {
 
     static async createUser(usernameParam, emailParam, passwordParam, httpMethod, res) {
-        let BCRYPT_SALT_ROUNDS = 12;
+        // let BCRYPT_SALT_ROUNDS = 12;
 
         const reqUrl = "/api/register";
         const apiVersion = "v1";
@@ -25,8 +25,9 @@ module.exports = class userRepo {
                         email: emailParam,
                         password: passwordParam
                     });
-                    // Save the user to the database
-                    newUser.save()
+                        // Save the user to the database
+                        newUser.save()
+
                         .then((user) => {
                             // Create a token based on the supplied username
                             let token = authentication.encodeToken(usernameParam);

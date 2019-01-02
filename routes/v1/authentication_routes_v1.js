@@ -9,6 +9,10 @@ const jsonModel = require('../../models/response/JsonModel');
 const checkObjects = require('../../models/validation/CheckObjects');
 // Repository imports
 const userRepo = require('../../data/repository/userRepo');
+// Encryption import
+const bcrypt = require('bcrypt');
+// Salt rounds
+const BCRYPT_SALT_ROUNDS = 12;
 
 
 // Route that is accessed by all requests to check if the user is authenticated to the server
@@ -63,8 +67,20 @@ router.post('/register', (req, res) => {
             const email = registerInfo.email.trim().toLowerCase();
             const password = registerInfo.password.trim();
 
-            // Call the createUser method to add a user to the database
-            userRepo.createUser(username, email, password, res);
+            bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
+                .then((hashedPassword) => {
+                    // Call the createUser method to add a user to the database
+                    // userRepo.createUser(username, email, password, res);
+                    return userRepo.createUser(username, email, hashedPassword, res);
+                })
+                .then(() => {
+                    res.send();
+                })
+                .catch((error) => {
+                    console.log("Error registering user: ");
+                    console.log(error);
+                    next();
+                })
         } catch (error) {
             console.log(error);
         }
