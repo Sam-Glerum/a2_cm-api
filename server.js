@@ -2,6 +2,7 @@
 const express = require('express');
 const server = express();
 const cors = require('cors');
+const https = require('https');
 // Database imports
 const mongoose = require('mongoose');
 const sql = require('mssql');
@@ -12,6 +13,14 @@ const jsonModel = require('./models/response/JsonModel');
 const bodyparser = require('body-parser');
 // Constant declarations -
 const port = process.env.PORT || 3000;
+// Filereading
+const fs = require('fs');
+
+// HTTPS cert options
+const httpsOptions = {
+    key: fs.readFileSync('./ssl/key.pem'),
+    cert: fs.readFileSync('./ssl/certificate.pem')
+};
 
 // Set environment
 if (process.env.NODE_ENV !== 'production') {
@@ -67,9 +76,13 @@ server.get("/", (req, res) => {
 });
 
 
-server.listen(port, () => {
+https.createServer(httpsOptions).listen(port, () => {
     console.log("Server is running on port " + port);
 });
+
+// server.listen(port, () => {
+//     console.log("Server is running on port " + port);
+// });
 
 
 

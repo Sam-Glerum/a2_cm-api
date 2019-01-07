@@ -11,6 +11,8 @@
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0",
     "isemail": "^3.2.0",
     "jwt-simple": "^0.5.5",
     "mocha": "^5.2.0",
