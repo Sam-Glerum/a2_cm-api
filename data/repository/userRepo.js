@@ -63,16 +63,19 @@ module.exports = class userRepo {
         await User.findOne({username: usernameParam})
             .then((user) => {
                 // Check if the supplied password is the same as the user's password
-                if (user.password === passwordParam) {
-                    // Assign a token to the user
-                    let token = authentication.encodeToken(usernameParam);
-                    res.status(200).json({
-                        response: new jsonModel(reqUrl, httpMethod, 200, "You have succesfully logged in"),
-                        token: token
-                    });
-                } else {
-                    res.status(401).json(new jsonModel(reqUrl, httpMethod, 401, "Password is incorrect"));
-                }
+                return bcrypt.compare(passwordParam, user.password);
+                })
+                .then((samePassword ) => {
+                    if (samePassword) {
+                        // Assign a token to the user
+                        let token = authentication.encodeToken(usernameParam);
+                        res.status(200).json({
+                            response: new jsonModel(reqUrl, httpMethod, 200, "You have succesfully logged in"),
+                            token: token
+                        });
+                    } else {
+                        res.status(401).json(new jsonModel(reqUrl, httpMethod, 401, "Password is incorrect"));
+                    }
             })
             .catch(() => {
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "User not found"));
