@@ -55,7 +55,7 @@ router.post('/login', (req, res) => {
 });
 
 // Registration route
-router.post('/register', (req, res) => {
+router.post('/register', (req, res, next) => {
     const registerInfo = req.body;
     if (!checkObjects.isValidRegistration(registerInfo)) {
         res.status(412).json(new jsonModel("/api/register", "POST", 412, "Request body properties are invalid or missing"));
@@ -67,20 +67,22 @@ router.post('/register', (req, res) => {
             const email = registerInfo.email.trim().toLowerCase();
             const password = registerInfo.password.trim();
 
-            bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
-                .then((hashedPassword) => {
-                    // Call the createUser method to add a user to the database
-                    // userRepo.createUser(username, email, password, res);
-                    return userRepo.createUser(username, email, hashedPassword, res);
-                })
-                .then(() => {
-                    res.send();
-                })
-                .catch((error) => {
-                    console.log("Error registering user: ");
-                    console.log(error);
-                    next();
-                })
+            userRepo.createUser(username, email, password, "POST", res);
+
+            // bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
+            //     .then((hashedPassword) => {
+            //         // Call the createUser method to add a user to the database
+            //         // userRepo.createUser(username, email, password, res);
+            //         return userRepo.createUser(username, email, hashedPassword, res);
+            //     })
+            //     .then(() => {
+            //         res.send();
+            //     })
+            //     .catch((error) => {
+            //         console.log("Error registering user: ");
+            //         console.log(error);
+            //         next();
+            //     })
         } catch (error) {
             console.log(error);
         }
