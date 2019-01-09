@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 let merchantCheckSchema = new Schema({
     countries: [],
     category: String,
+    createdOn: {type: Date, default: Date.now()}
 });
 
 let merchantCheck = mongoose.model('MerchantCheck', merchantCheckSchema);

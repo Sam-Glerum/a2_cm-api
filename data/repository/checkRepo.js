@@ -11,7 +11,7 @@ const sqlRequest = new sql.Request();
 module.exports = class checkRepo {
 
     static async createMerchantCheck(countries, category, httpMethod, res) {
-        const reqUrl = '/api/merchantcheck';
+        const reqUrl = '/api/merchantchecks';
 
         const newMerchantCheck = {
             countries: countries,
@@ -25,6 +25,26 @@ module.exports = class checkRepo {
             .catch((error) => {
                 console.log(error);
                 res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, merchant check has not been created"));
+            })
+    }
+
+    static async createPaymentCheck(amount, currency, time, paymentMethod, httpMethod, res) {
+        const reqUrl = '/api/paymentchecks';
+
+        const newPaymentCheck = {
+            amount: amount,
+            currency: currency,
+            time: time,
+            paymentMethod: paymentMethod
+        };
+
+        newPaymentCheck.save()
+            .then(() => {
+                res.status(201).json(new jsonModel(reqUrl, httpMethod, 201, "Payment check has been created"));
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(500).json(new jsonModel(reqUrl, httpMethod, 201, "Something went wrong, payment check has not been creaeted"))
             })
     }
 };
