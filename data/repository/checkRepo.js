@@ -30,14 +30,14 @@ module.exports = class checkRepo {
     static async createPaymentCheck(amount, currency, time, paymentMethod, httpMethod, res) {
         const reqUrl = '/api/paymentchecks';
 
-        const newPaymentCheck = {
+        const newPaymentCheck = new paymentCheck({
             amount: amount,
             currency: currency,
             time: time,
             paymentMethod: paymentMethod
-        };
+        });
 
-        newPaymentCheck.save()
+        await newPaymentCheck.save()
             .then(() => {
                 res.status(201).json(new jsonModel(reqUrl, httpMethod, 201, "Payment check has been created"));
             })
