@@ -3,21 +3,20 @@ const sql = require('mssql');
 // Response model imports
 const jsonModel = require('../../models/response/JsonModel');
 // Entity imports
-const merchantCheck = require('../schema/paymentCheck');
-
-// Create Request object for querying the SQL database
-const sqlRequest = new sql.Request();
+const merchantCheck = require('../schema/merchantCheck');
+const paymentCheck = require('../schema/paymentCheck');
 
 module.exports = class checkRepo {
 
     static async createMerchantCheck(countries, category, httpMethod, res) {
         const reqUrl = '/api/merchantchecks';
 
-        const newMerchantCheck = {
+        const newMerchantCheck =  new merchantCheck({
             countries: countries,
             category: category
-        };
+        });
 
+        // await newMerchantCheck.save()
         await newMerchantCheck.save()
             .then(() => {
                 res.status(201).json(new jsonModel(reqUrl, httpMethod, 201, "Merchant check has been created"));
