@@ -2,15 +2,28 @@
 const express = require('express');
 const router = express.Router();
 // Repository imports
-const paymentRepo = require('../../data/repository/paymentRepo');
+const sqlRepo = require('../../data/repository/sqlRepo');
 
 router.get('/', (req, res) => {
-    paymentRepo.getAllPayments('GET', res);
+    sqlRepo.getAllItemsFromSQL(
+        res,
+        '/api/payments',
+        'GET',
+        'select * from Payments',
+        'Payments'
+        )
 });
 
 router.get('/:paymentID', (req, res) => {
     let paymentId = req.params.paymentID;
-    paymentRepo.getPaymentByID(paymentId, 'GET', res);
+    sqlRepo.getSingleItemFromSQL(
+        res,
+        '/api/payments',
+        'GET',
+        'select * from Payments where ID = ' + paymentId,
+        'Payments',
+        paymentId
+    )
 });
 
 module.exports = router;
