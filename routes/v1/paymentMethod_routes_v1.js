@@ -2,16 +2,30 @@
 const express = require('express');
 const router = express.Router();
 // Repository imports
-const paymentMethodRepo = require('../../data/repository/paymentMethodRepo');
+const sqlRepo = require('../../data/repository/sqlRepo');
 
 router.get('/', (req, res) => {
-    paymentMethodRepo.getAllPaymentMethods('GET', res);
+
+    sqlRepo.getAllItemsFromSQL(
+        res,
+        '/api/paymentMethods',
+        'GET',
+        'select * from PaymentMethods',
+        'PaymentMethods'
+    )
 });
 
 router.get('/:paymentMethodName', (req, res) => {
     let paymentMethodName = req.params.paymentMethodName.toUpperCase();
 
-    paymentMethodRepo.getPaymentMethodByName(paymentMethodName, 'GET', res);
+    sqlRepo.getSingleItemFromSQL(
+        res,
+        '/api/paymentMethods/' + paymentMethodName,
+        'GET',
+        'select * from PaymentMethods where PaymentMethod = \'' + paymentMethodName + '\'',
+        'PaymentMethods',
+        paymentMethodName
+    )
 });
 
 module.exports = router;
