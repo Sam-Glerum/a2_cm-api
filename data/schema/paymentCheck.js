@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let paymentCheckSchema = new Schema({
-    amount: {type: mongoose.Schema.Types.Decimal},
+    amount: {type: mongoose.Schema.Types.Decimal, required: true},
     currency: {type: String},
     time: {type: Number},
     paymentMethod: {type: String}
