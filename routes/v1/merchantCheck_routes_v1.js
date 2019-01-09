@@ -2,12 +2,12 @@
 const express = require('express');
 const router = express.Router();
 // Repository imports
-const checkRepo = require('../../data/repository/checkRepo');
+const merchantCheckRepo = require('../../data/repository/merchantCheckRepo');
 
 // Create merchant check
 router.post('/', (req, res) => {
     let merchantCheck = req.body;
-    checkRepo.createMerchantCheck(merchantCheck.countries, merchantCheck.category, "POST", res);
+    merchantCheckRepo.createMerchantCheck(merchantCheck.countries, merchantCheck.category, "POST", res);
 });
 
 module.exports = router;
