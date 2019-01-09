@@ -2,16 +2,29 @@
 const express = require('express');
 const router = express.Router();
 // Repository imports
-const organizationRepo = require('../../data/repository/organizationRepo');
+const sqlRepo = require('../../data/repository/sqlRepo');
 
 router.get('/', (req, res) => {
-    organizationRepo.getAllOrganizations('GET', res);
+    sqlRepo.getAllItemsFromSQL(
+        res,
+        '/api/organizations',
+        'GET',
+        'select * from Organizations',
+        'Organizations'
+    );
 });
 
 router.get('/:organizationID', (req, res) => {
     let organizationID = req.params.organizationID;
 
-    organizationRepo.getOrganizationByID(organizationID, 'GET', res);
+    sqlRepo.getSingleItemFromSQL(
+        res,
+        '/api/organizations',
+        'GET',
+        'select * from Organizations where ID = \'' + organizationID + '\'',
+        'Organizations',
+        organizationID
+    )
 });
 
 module.exports = router;
