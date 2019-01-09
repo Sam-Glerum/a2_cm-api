@@ -10,5 +10,11 @@ router.post('/', (req, res) => {
     paymentCheckRepo.createPaymentCheck(paymentCheck.amount, paymentCheck.category, paymentCheck.time, paymentCheck.paymentMethod, "POST", res);
 });
 
+// Delete merchant check
+router.delete('/:checkID', (req, res) => {
+    let checkID = req.params.checkID;
+    paymentCheckRepo.deletePaymentCheck(checkID, "DELETE", res);
+});
+
 module.exports = router;
 

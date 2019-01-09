@@ -23,4 +23,8 @@ module.exports = class MerchantCheckRepo {
                 res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, merchant check has not been created"));
             })
     }
+
+    static async deleteMerchantCheck(){
+        return 0;
+    };
 };
