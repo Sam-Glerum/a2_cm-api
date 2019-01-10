@@ -2,16 +2,30 @@
 const express = require('express');
 const router = express.Router();
 // Repository imports
-const merchantCategoryRepo = require('../../data/repository/merchantCategoryRepo');
+const sqlRepo = require('../../data/repository/sqlRepo');
 
 router.get('/', (req, res) => {
-    merchantCategoryRepo.getAllMerchantCategoryCodes('GET', res);
+
+    sqlRepo.getAllItemsFromSQL(
+        res,
+        '/api/merchantCategories',
+        'GET',
+        'select * from MerchantCategoryCodes',
+        'MerchantCategoryCodes'
+    )
 });
 
 router.get('/:categoryCode', (req, res) => {
     let categoryCode = req.params.categoryCode
 
-    merchantCategoryRepo.getCategoryInfoByCategoryCode(categoryCode, 'GET', res);
+    sqlRepo.getSingleItemFromSQL(
+        res,
+        '/api/merchantCategories/' + categoryCode,
+        'GET',
+        'select * from MerchantCategoryCodes where Mcc = ' + categoryCode,
+        'MerchantCategoryCodes',
+        categoryCode
+    )
 });
 
 module.exports = router;

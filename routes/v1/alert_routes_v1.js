@@ -2,15 +2,29 @@
 const express = require('express');
 const router = express.Router();
 // Repository imports
-const alertRepo = require('../../data/repository/alertRepo');
+const sqlRepo = require('../../data/repository/sqlRepo');
 
 router.get('/', (req, res) => {
-    alertRepo.getAllALerts('GET', res);
+    sqlRepo.getAllItemsFromSQL(
+        res,
+        '/api/alerts',
+        'GET',
+        'select * from Alerts',
+        'Alerts'
+    )
 });
 
 router.get('/:alertID', (req, res) => {
     let alertID = req.params.alertID;
-    alertRepo.getAlertByID(alertID, 'GET', res);
+
+    sqlRepo.getSingleItemFromSQL(
+        res,
+        '/api/alerts/' + alertID,
+        'GET',
+        'select * from Alerts where ID = ' + alertID,
+        'Alerts',
+        alertID
+    )
 });
 
 module.exports = router;

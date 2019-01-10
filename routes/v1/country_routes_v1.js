@@ -2,16 +2,29 @@
 const express = require('express');
 const router = express.Router();
 // Repository imports
-const countryRepo = require('../../data/repository/countryRepo');
+const sqlRepo = require('../../data/repository/sqlRepo');
 
 router.get('/', (req, res) => {
-    countryRepo.getAllCountries('GET', res);
+    sqlRepo.getAllItemsFromSQL(
+        res,
+        '/api/countries',
+        'GET',
+        'select * from Countries',
+        'Countries'
+    )
 });
 
 router.get('/:isoCode', (req, res) => {
     let isoCode = req.params.isoCode.toUpperCase();
 
-    countryRepo.getCountryByIsoCode(isoCode, 'GET', res);
+    sqlRepo.getSingleItemFromSQL(
+        res,
+        '/api/countries/' + isoCode,
+        'GET',
+        'select * from Countries where IsoCode = \'' + isoCode + '\'',
+        'Countries',
+        isoCode
+    )
 });
 
 module.exports = router;
