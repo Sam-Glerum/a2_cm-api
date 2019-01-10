@@ -4,7 +4,7 @@ const server = require('../server');
 const User = require('../data/schema/user');
 const mongoose = require('mongoose');
 
-// Setup chai for tests and requests being send through chai-http.
+// Setup chai for tests and requests being sent through chai-http.
 chai.should();
 chai.use(chaiHttp);
 
@@ -15,7 +15,7 @@ const TEST_USER_NAME = 'tester';
 const TEST_USER_PASS = 'soepersiekret';
 let token;
 
-describe('Merchant:', () => {
+xdescribe('Merchant:', () => {
 
     // Test database is emptied between tests,
     // the beforeEach statement below adds a default user to the database before every test and after the database is emptied.

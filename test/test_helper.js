@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 before((done) => {
-    const DATABASE_NAME = process.env.dbName;
+    const DATABASE_NAME = 'test';
     const dbUser = process.env.dbUser;
     const dbPassword = process.env.dbPassword;
     const CONNECTION_STRING = 'mongodb+srv://' + dbUser + ':' + dbPassword + '@cm-a2-c2mt3.mongodb.net/'+ DATABASE_NAME +'?retryWrites=true';
@@ -21,9 +21,37 @@ before((done) => {
         });
 });
 
+let token;
+let testUser;
+
 beforeEach((done) => {
     const { users } = mongoose.connection.collections;
     users.drop(() => {
-        done();
+        testUser = new User({
+            username: TEST_USER_NAME,
+            email: 'tester@test.com',
+            password: TEST_USER_PASS
+        });
+
+        token = '';
+
+        testUser.save()
+            .then(() => {
+                chai.request(server)
+                    .post('/api/login')
+                    .send({
+                        username: TEST_USER_NAME,
+                        password: TEST_USER_PASS
+                    })
+                    .end((err, res) => {
+                        token = res.body.token;
+                        done();
+                    });
+            });
     })
 });
+
+module.exports = {
+    user: testUser,
+    token: token
+};
