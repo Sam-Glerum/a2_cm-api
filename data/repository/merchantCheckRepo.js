@@ -8,6 +8,10 @@ module.exports = class MerchantCheckRepo {
     static async createMerchantCheck(countries, category, httpMethod, res) {
         const reqUrl = '/api/merchantchecks';
 
+        if (countries.isNullOrUndefined || category.isNullOrUndefined) {
+            res.status(412).json(new jsonModel(reqUrl, httpMethod, 412, "Some body properties are missing or incorrect"));
+        }
+
         const newMerchantCheck = new merchantCheck({
             countries: countries,
             category: category
