@@ -27,13 +27,21 @@ module.exports = class PaymentCheckRepo {
     static async deletePaymentCheck(checkID, httpMethod, res) {
         const reqUrl = "/api/paymentchecks/" + checkID;
 
-        await paymentCheck.findOne({_id: checkID}).remove().then(() => {
-            res.status(200).json(new jsonModel(reqUrl, httpMethod, 200, "Payment check has been deleted"));
+
+        // await paymentCheck.findOne({_id: checkID}).remove().then(() => {
+        await paymentCheck.findById({_id: checkID})
+            .then((paymentcheck) => {
+                if (paymentcheck == null) {
+                    res.status(404).json(new jsonModel(reqUrl, httpMethod, 200, "Payment " + checkID + " not found"));
+                }
+                else {
+                    paymentcheck.remove();
+                    res.status(200).json(new jsonModel(reqUrl, httpMethod, 200, "Payment check has been deleted"));
+                }
         })
             .catch((error) => {
                 console.log(error);
                 res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, payment check has not been deleted"))
             })
-
     }
 };
