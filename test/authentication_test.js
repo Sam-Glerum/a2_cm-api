@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 chai.should();
 chai.use(chaiHttp);
 
-// default tester credentials.
+// TEST input
 const TEST_USER_NAME = 'tester';
 const TEST_USER_PASS = 'soepersiekret';
 
