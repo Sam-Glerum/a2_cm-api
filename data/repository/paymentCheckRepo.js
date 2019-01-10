@@ -74,7 +74,7 @@ module.exports = class PaymentCheckRepo {
         await paymentCheck.findById({_id: checkID})
             .then((paymentcheck) => {
                 if (paymentcheck == null) {
-                    res.status(404).json(new jsonModel(reqUrl, httpMethod, 200, "Payment " + checkID + " not found"));
+                    res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Payment " + checkID + " not found"));
                 }
                 else {
                     paymentcheck.remove();
