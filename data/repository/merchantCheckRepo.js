@@ -62,7 +62,22 @@ module.exports = class MerchantCheckRepo {
         })
     }
 
-    static async deleteMerchantCheck(){
-        return 0;
+    static async deleteMerchantCheck(checkID, httpMethod, res){
+        const reqUrl = "/api/merchantchecks/" + checkID;
+
+        await merchantCheck.findById({_id: checkID})
+            .then((merchantCheck) => {
+                if (merchantCheck == null) {
+                    res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Merchant " + checkID + " not found"));
+                }
+                else {
+                    merchantCheck.remove();
+                    res.status(200).json(new jsonModel(reqUrl, httpMethod, 200, "Merchant check has been deleted"));
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, merchant check has not been deleted"))
+            })
     };
 };
