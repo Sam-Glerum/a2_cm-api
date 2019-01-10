@@ -24,6 +24,44 @@ module.exports = class MerchantCheckRepo {
             })
     }
 
+    static async readMerchantCheck(httpMethod, res) {
+        const reqUrl = '/api/merchantchecks';
+
+        await merchantCheck.find({}, function (err, docs) {
+            res.status(200).json(new jsonModel(reqUrl, httpMethod, 200, docs));
+        })
+            .catch((error) => {
+                console.log(error);
+                res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, payment check has not been updated"))
+            });
+    }
+
+    static async updateMerchantCheck(checkID, countries, category, httpMethod, res) {
+        const reqUrl = '/api/merchantchecks';
+
+        await merchantCheck.findOne({_id: checkID}, function (err, docs) {
+            if (docs === null) {
+                res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Check not found"))
+            } else if (err) {
+                res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Internal server error"))
+            }
+            else if (countries != null && category != null) {
+                docs.countries = countries;
+                docs.category = category;
+                docs.save()
+                    .then(() => {
+                        res.status(200).json(new jsonModel(reqUrl, httpMethod, 200, "Merchant check has been updated"));
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, merchant check has not been updated"))
+                    });
+            } else {
+                res.status(412).json(new jsonModel(reqUrl, httpMethod, 412, "Missing variables"))
+            }
+        })
+    }
+
     static async deleteMerchantCheck(){
         return 0;
     };
