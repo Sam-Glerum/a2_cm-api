@@ -10,6 +10,17 @@ router.post('/', (req, res) => {
     merchantCheckRepo.createMerchantCheck(merchantCheck.countries, merchantCheck.category, "POST", res);
 });
 
+//Read merchant check
+router.get('/', (req, res) => {
+    merchantCheckRepo.readMerchantCheck("GET", res);
+});
+
+// Update merchant check
+router.put('/', (req, res) => {
+    let merchantCheck = req.body;
+    merchantCheckRepo.updateMerchantCheck(merchantCheck.checkId, merchantCheck.countries, merchantCheck.category, "PUT", res);
+});
+
 // Delete merchant check
 router.delete('/:checkID', (req, res) => {
     let checkID = req.params.checkID;
