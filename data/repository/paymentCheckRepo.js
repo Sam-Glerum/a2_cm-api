@@ -33,16 +33,19 @@ module.exports = class PaymentCheckRepo {
 
         await paymentCheck.find({}, function (err, docs) {
             let paymentCheckObject = {
-                amount: docs.amount.toString(),
+                amount: docs.amount,
                 currency: docs.currency,
                 time: docs.time,
                 paymentMethod: docs.paymentMethod
             };
-            res.status(200).json(new jsonModel(reqUrl, httpMethod, 200, paymentCheckObject));
+            res.status(200).json({
+                response: new jsonModel(reqUrl, httpMethod, 200, "GET all payment checks"),
+                paymentChecks: docs
+            });
         })
             .catch((error) => {
                 console.log(error);
-                res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, payment check has not been updated"))
+                res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, no payment checks found"))
             });
     }
 
