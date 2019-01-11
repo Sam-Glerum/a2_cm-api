@@ -12,7 +12,7 @@ module.exports = class PaymentCheckRepo {
         }
 
         const newPaymentCheck = new paymentCheck({
-            amount: amount,
+            amount: amount.toString(),
             currency: currency,
             time: time,
             paymentMethod: paymentMethod
