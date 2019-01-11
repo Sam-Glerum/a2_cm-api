@@ -5,7 +5,7 @@ const jsonModel = require('../../models/response/JsonModel');
 // Authentication import
 const authentication = require('../../authentication/authentication');
 // Encryption import
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 module.exports = class userRepo {
 

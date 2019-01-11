@@ -10,7 +10,7 @@ const checkObjects = require('../../models/validation/CheckObjects');
 // Repository imports
 const userRepo = require('../../data/repository/userRepo');
 // Encryption import
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 // Salt rounds
 const BCRYPT_SALT_ROUNDS = 12;
 
