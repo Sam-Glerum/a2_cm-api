@@ -12,7 +12,7 @@ module.exports = class PaymentCheckRepo {
         }
 
         const newPaymentCheck = new paymentCheck({
-            amount: amount.toString(),
+            amount: amount,
             currency: currency,
             time: time,
             paymentMethod: paymentMethod
@@ -32,7 +32,13 @@ module.exports = class PaymentCheckRepo {
         const reqUrl = '/api/paymentchecks';
 
         await paymentCheck.find({}, function (err, docs) {
-            res.status(200).json(new jsonModel(reqUrl, httpMethod, 200, docs));
+            let paymentCheckObject = {
+                amount: docs.amount.toString(),
+                currency: docs.currency,
+                time: docs.time,
+                paymentMethod: docs.paymentMethod
+            };
+            res.status(200).json(new jsonModel(reqUrl, httpMethod, 200, paymentCheckObject));
         })
             .catch((error) => {
                 console.log(error);
