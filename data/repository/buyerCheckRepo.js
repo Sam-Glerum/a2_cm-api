@@ -34,13 +34,36 @@ module.exports = class BuyerCheckRepo {
 
         await buyerCheck.find({})
             .then((buyerChecks) => {
-                res.status(200).json({
-                    response: new jsonModel(reqUrl, httpMethod, 200, "GET all buyer checks"),
-                    items: buyerChecks[0]
-                })
+                if (buyerCheck.length > 0) {
+                    res.status(200).json({
+                        response: new jsonModel(reqUrl, httpMethod, 200, "GET all buyer checks"),
+                        buyerChecks: buyerChecks[0]
+                    })
+                } else {
+                    res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No buyer checks found"));
+                }
             })
             .catch(() => {
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No buyer checks found"));
             })
-    }g
+    }
+
+    static async getBuyerCheckById(checkID, httpMethod, res) {
+        const reqUrl = '/api/buyerChecks';
+
+        await buyerCheck.findOne({_id: checkID})
+            .then((buyerCheck) => {
+                if (buyerCheck.length > 0) {
+                    res.status(200).json({
+                        response: new jsonModel(reqUrl, httpMethod, 200, "GET buyer check"),
+                        buyerCheck: buyerCheck[0]
+                    })
+                } else {
+                    res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Buyer check " + checkID + " not found"))
+                }
+            })
+            .catch((error) => {
+                res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Buyer check " + checkID + " not found"))
+            })
+    }
 };
