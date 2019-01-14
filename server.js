@@ -72,11 +72,6 @@ server.get("/", (req, res) => {
     res.redirect("/api");
 });
 
-// server.get("*", (req, res) => {
-//     res.status(404);
-//     res.json("Unknown route");
-// });
-
 server.listen(port, () => {
     console.log("Server is running on port " + port);
 });
