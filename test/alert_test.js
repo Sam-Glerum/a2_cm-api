@@ -12,9 +12,9 @@ chai.use(chaiHttp);
 // TEST input
 const TEST_ALERT_ID = '498561231';
 
-const TEST_USER_NAME = helper.user.username;
+const TEST_USER_NAME = helper.username;
 
-describe('JUNK', () => {
+xdescribe('JUNK', () => {
     it('TESTS FOR PROPERTY', () => {
         console.log(TEST_USER_NAME);
     });

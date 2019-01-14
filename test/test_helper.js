@@ -1,4 +1,11 @@
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const server = require('../server');
 const mongoose = require('mongoose');
+const User = require('../data/schema/user');
+
+chai.should();
+chai.use(chaiHttp);
 
 mongoose.Promise = global.Promise;
 
@@ -23,6 +30,9 @@ before((done) => {
 
 let token;
 let testUser;
+
+const TEST_USER_NAME = 'tester';
+const TEST_USER_PASS = 'soepersiekret';
 
 beforeEach((done) => {
     const { users } = mongoose.connection.collections;
@@ -52,6 +62,7 @@ beforeEach((done) => {
 });
 
 module.exports = {
-    user: testUser,
+    username: TEST_USER_NAME,
+    password: TEST_USER_PASS,
     token: token
 };

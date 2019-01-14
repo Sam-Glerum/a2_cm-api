@@ -15,7 +15,7 @@ const TEST_CURRENCY_ID = '0'; // <-- change this value
 const token = '0'; // <-- change this value by import
 
 xdescribe('Currency:', () => {
-    ít('GET: \nShould return ONE order when performing a GET with specific ID', (done) => {
+    it('GET: \nShould return ONE order when performing a GET with specific ID', (done) => {
         chai.request(server)
             .get('/api/currencies/' + TEST_CURRENCY_ID) // could be different path for currencies
             .set('X-Access-Token', token)

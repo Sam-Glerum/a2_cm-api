@@ -1,6 +1,6 @@
 // Imports...
 const chai = require('chai');
-const chaiHttp = require('chai-httpi');
+const chaiHttp = require('chai-http');
 const server = require('../server');
 const User = require('../data/schema/user');
 const mongoose = require('mongoose');
