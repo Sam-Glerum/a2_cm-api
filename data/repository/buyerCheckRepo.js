@@ -66,4 +66,23 @@ module.exports = class BuyerCheckRepo {
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Buyer check " + checkID + " not found"))
             })
     }
+
+    static async deleteBuyerCheckByID(checkID, httpMethod, res) {
+        const reqUrl = "/api/buyerChecks/" + checkID;
+
+        await buyerCheck.findById({_id: checkID})
+            .then((buyerCheck) => {
+                if (buyerCheck == null) {
+                    res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Buyer check " + checkID + " not found"));
+                }
+                else {
+                    buyerCheck.remove();
+                    res.status(200).json(new jsonModel(reqUrl, httpMethod, 200, "Buyer check has been deleted"));
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, buyer check has not been deleted"))
+            })
+    }
 };
