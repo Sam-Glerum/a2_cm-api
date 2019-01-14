@@ -65,6 +65,8 @@ server.use('/api/currencies', require('./routes/v1/currency_routes_v1'));
 server.use('/api/merchantchecks', require('./routes/v1/merchantCheck_routes_v1'));
 // Load PaymentCheck routes
 server.use('/api/paymentchecks', require('./routes/v1/paymentCheck_routes_v1'));
+// Load Check routes
+server.use('/api/checks', require('./routes/v1/check_routes_v1'));
 
 server.get("/", (req, res) => {
     res.redirect("/api");
