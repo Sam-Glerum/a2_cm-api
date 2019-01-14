@@ -9,7 +9,7 @@ module.exports = class BuyerCheckRepo {
         const reqUrl = '/api/buyerChecks';
 
         if (name.isNullOrUndefined || billingCountry.isNullOrUndefined || shippingCountry.isNullOrUndefined) {
-            res.status(412),json(new jsonModel(reqUrl, httpMethod, 412, "Some body properties are missing or incorrect"));
+            res.status(412).json(new jsonModel(reqUrl, httpMethod, 412, "Some body properties are missing or incorrect"));
         }
 
         const newBuyerCheck = new buyerCheck({
@@ -36,11 +36,11 @@ module.exports = class BuyerCheckRepo {
             .then((buyerChecks) => {
                 res.status(200).json({
                     response: new jsonModel(reqUrl, httpMethod, 200, "GET all buyer checks"),
-                    items: buyerChecks
+                    items: buyerChecks[0]
                 })
             })
             .catch(() => {
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No buyer checks found"));
             })
-    }
+    }g
 };
