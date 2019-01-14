@@ -32,9 +32,9 @@ module.exports = class BuyerCheckRepo {
     static async getAllBuyerChecks(httpMethod, res) {
         const reqUrl = '/api/buyerChecks';
 
-        await buyerCheck.find({})
+        await buyerCheck.find()
             .then((buyerChecks) => {
-                if (buyerCheck.length > 0) {
+                if (buyerChecks.length !== 0) {
                     res.status(200).json({
                         response: new jsonModel(reqUrl, httpMethod, 200, "GET all buyer checks"),
                         buyerChecks: buyerChecks[0]
@@ -51,12 +51,13 @@ module.exports = class BuyerCheckRepo {
     static async getBuyerCheckById(checkID, httpMethod, res) {
         const reqUrl = '/api/buyerChecks';
 
-        await buyerCheck.findOne({_id: checkID})
-            .then((buyerCheck) => {
-                if (buyerCheck.length > 0) {
+        await buyerCheck.findById( checkID)
+            .then((buyerCheckParam) => {
+                console.log(buyerCheckParam);
+                if (!buyerCheckParam.isNullOrUndefined) {
                     res.status(200).json({
                         response: new jsonModel(reqUrl, httpMethod, 200, "GET buyer check"),
-                        buyerCheck: buyerCheck[0]
+                        buyerCheck: buyerCheckParam
                     })
                 } else {
                     res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Buyer check " + checkID + " not found"))
@@ -65,6 +66,10 @@ module.exports = class BuyerCheckRepo {
             .catch((error) => {
                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "Buyer check " + checkID + " not found"))
             })
+    }
+
+    static async updateBuyerCheck(checkID, httpMethod, res) {
+        const reqUrl = "/api/buyerChecks/" + checkID;
     }
 
     static async deleteBuyerCheckByID(checkID, httpMethod, res) {
