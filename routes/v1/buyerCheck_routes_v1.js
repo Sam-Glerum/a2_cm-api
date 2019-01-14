@@ -4,6 +4,10 @@ const router = express.Router();
 // Repository imports
 const buyerCheckRepo = require('../../data/repository/buyerCheckRepo');
 
+router.get('/', (req, res) => {
+    buyerCheckRepo.getAllBuyerChecks(res);
+});
+
 router.post('/', (req, res) => {
     let buyerCheckInfo = req.body;
     buyerCheckRepo.createBuyerCheck(

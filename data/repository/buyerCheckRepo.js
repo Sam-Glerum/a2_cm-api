@@ -28,4 +28,19 @@ module.exports = class BuyerCheckRepo {
                 res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, buyer check has not been created"));
             })
     }
+
+    static async getAllBuyerChecks(httpMethod, res) {
+        const reqUrl = '/api/buyerChecks';
+
+        await buyerCheck.find({})
+            .then((buyerChecks) => {
+                res.status(200).json({
+                    response: new jsonModel(reqUrl, httpMethod, 200, "GET all buyer checks"),
+                    items: buyerChecks
+                })
+            })
+            .catch(() => {
+                res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No buyer checks found"));
+            })
+    }
 };
