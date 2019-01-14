@@ -17,7 +17,7 @@ module.exports = class BuyerCheckRepo {
             name: name,
             billingCountry: billingCountry,
             shippingCountry: shippingCountry
-        })
+        });
 
         await newBuyerCheck.save()
             .then(() => {
