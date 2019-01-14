@@ -25,6 +25,20 @@ router.post('/', (req, res) => {
     );
 });
 
+router.put('/:checkID', (req, res) => {
+    let buyerCheckInfo = req.body;
+    let checkID = req.params.checkID;
+    buyerCheckRepo.updateBuyerCheck(
+        checkID,
+        buyerCheckInfo.checkName,
+        buyerCheckInfo.name,
+        buyerCheckInfo.billingCountry,
+        buyerCheckInfo.shippingCountry,
+        "PUT",
+        res
+    )
+});
+
 router.delete('/:checkID', (req, res) => {
     let checkID = req.params.checkID;
     buyerCheckRepo.deleteBuyerCheckByID(checkID, "DELETE", res);

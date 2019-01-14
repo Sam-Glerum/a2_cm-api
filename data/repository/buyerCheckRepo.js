@@ -68,8 +68,26 @@ module.exports = class BuyerCheckRepo {
             })
     }
 
-    static async updateBuyerCheck(checkID, httpMethod, res) {
+    static async updateBuyerCheck(checkID, checkname, name, billingCountry, shippingCountry, httpMethod, res) {
         const reqUrl = "/api/buyerChecks/" + checkID;
+
+        await buyerCheck.findOneAndUpdate({_id: checkID}, {
+            checkName: checkname,
+            name: name,
+            billingCountry: billingCountry,
+            shippingCountry: shippingCountry
+            },
+            {new: true})
+            .then(() => {
+                res.status(200).json(new jsonModel(reqUrl, httpMethod, 200, "Buyer check " + checkID + " has been updated"));
+            })
+            .catch((error) => {
+                res.status(404).json({
+                    error: error,
+                    response: new jsonModel(reqUrl, httpMethod, 404, "Buyer check " + checkID + "not found")
+                })
+            })
+
     }
 
     static async deleteBuyerCheckByID(checkID, httpMethod, res) {
