@@ -65,13 +65,10 @@ server.use('/api/organizations', require('./routes/v1/organization_routes_v1'));
 server.use('/api/payments', require('./routes/v1/payment_routes_v1'));
 // Load PaymentCheck routes
 server.use('/api/paymentchecks', require('./routes/v1/paymentCheck_routes_v1'));
-<<<<<<< HEAD
 // Load Check routes
 server.use('/api/checks', require('./routes/v1/check_routes_v1'));
-=======
 // Load Payment Method routes
 server.use('/api/paymentMethods', require('./routes/v1/paymentMethod_routes_v1'));
->>>>>>> develop
 
 server.get("/", (req, res) => {
     res.redirect("/api");
