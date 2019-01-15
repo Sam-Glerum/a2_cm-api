@@ -4,14 +4,15 @@ const jsonModel = require('../../models/response/JsonModel');
 const paymentCheck = require('../schema/paymentCheck');
 
 module.exports = class PaymentCheckRepo {
-    static async createPaymentCheck(amount, currency, time, paymentMethod, httpMethod, res) {
+    static async createPaymentCheck(checkName, amount, currency, time, paymentMethod, httpMethod, res) {
         const reqUrl = '/api/paymentchecks';
 
-        if (amount.isNullOrUndefined || currency.isNullOrUndefined || time.isNullOrUndefined || paymentMethod.isNullOrUndefined) {
+        if (checkName.isNullOrUndefined || amount.isNullOrUndefined || currency.isNullOrUndefined || time.isNullOrUndefined || paymentMethod.isNullOrUndefined) {
             res.status(412).json(new jsonModel(reqUrl, httpMethod, 412, "Some body properties are missing or incorrect"));
         }
 
         const newPaymentCheck = new paymentCheck({
+            checkName: checkName,
             amount: amount,
             currency: currency,
             time: time,
@@ -40,7 +41,7 @@ module.exports = class PaymentCheckRepo {
             });
     }
 
-    static async updatePaymentCheck(checkID, amount, currency, time, paymentMethod, httpMethod, res) {
+    static async updatePaymentCheck(checkID, checkName, amount, currency, time, paymentMethod, httpMethod, res) {
         const reqUrl = '/api/paymentchecks';
 
         await paymentCheck.findOne({_id: checkID}, function (err, docs) {
@@ -50,6 +51,7 @@ module.exports = class PaymentCheckRepo {
                 res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Internal server error"))
             }
             else if (amount != null && currency != null && time != null && paymentMethod != null) {
+                docs.checkName = checkName,
                 docs.amount = amount;
                 docs.currency = currency;
                 docs.time = time;
