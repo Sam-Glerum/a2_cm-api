@@ -13,6 +13,8 @@ const bodyparser = require('body-parser');
 // Constant declarations -
 const port = process.env.PORT || 3000;
 
+const sqlRepo = require('./data/repository/sqlRepo');
+
 // Set environment
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').load();
@@ -37,6 +39,8 @@ mongoose.connection.once('open', () => {
 
 // Establish a connection with the cm-a2 SQL database (hosted on Azure)
 sqlConnection.connectToSqlDb();
+sqlRepo.fireMerchantChecksOnSql();
+sqlRepo.firePaymentChecksOnSql();
 
 /*
 Loading routes
@@ -78,6 +82,3 @@ server.get("/", (req, res) => {
 server.listen(port, () => {
     console.log("Server is running on port " + port);
 });
-
-
-

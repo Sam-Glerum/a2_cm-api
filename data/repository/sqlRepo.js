@@ -2,10 +2,12 @@
 const sql = require('mssql');
 // Response model imports
 const jsonModel = require('../../models/response/JsonModel');
+const merchantCheck = require('../schema/merchantCheck');
+const paymentCheck = require('../schema/paymentCheck');
 
 const sqlRequest = new sql.Request();
 
-module.exports = class sqlRepo{
+module.exports = class sqlRepo {
 
     static async getAllItemsFromSQL(response, requestUrl, httpMethod, query, table) {
         try {
@@ -74,5 +76,90 @@ module.exports = class sqlRepo{
                 "Something went wrong, please try again"
             ));
         }
+    }
+
+    static async fireMerchantChecksOnSql() {
+        try {
+            await merchantCheck.find({}, function (err, docs) {
+                for (let check in docs) {
+                    const countries = docs[check].countries;
+                    const category = docs[check].category;
+                    let query =
+                        "Select o.ID " +
+                        "From Orders o " +
+                        "left join Merchants m on o.MerchantID = m.ID " +
+                        "left join Countries c on m.Country = c.IsoCode " +
+                        "left join MerchantCategoryCodes mcc on m.MerchantCategoryCode = mcc.Mcc " +
+                        "where ";
+                    for (let i in countries) {
+                        if (!isNaN(i)) {
+                            query += "c.Name = '" + countries[i] + "' AND "
+                        }
+                    }
+                    query += "mcc.Description = '" + category + "'";
+                    sqlRepo.fireQuery(query);
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async firePaymentChecksOnSql() {
+        try {
+            await paymentCheck.find({}, function (err, docs) {
+                for (let check in docs) {
+                    const amount = docs[check].amount;
+                    const currency = docs[check].currency;
+                    const time = docs[check].time;
+                    const paymentMethod = docs[check].paymentMethod
+                    if (time === 0) {
+                        let query =
+                            "select o.ID " +
+                            "from Orders o " +
+                            "inner join Currencies c on o.Currency = c.CurrencyCode " +
+                            "inner join Payments p on p.OrderID = o.ID " +
+                            "inner join PaymentMethods pm on pm.PaymentMethod = p.PaymentMethod " +
+                            "where c.Description = '" + currency + "' AND " +
+                            "pm.PaymentMethod = '" + paymentMethod + "' AND " +
+                            "o.amount >= " + amount;
+                        console.log(query);
+                    } else if (time !== 0) {
+                        let query = "select o.ID " +
+                            "from Orders o " +
+                            "inner join Currencies c on o.Currency = c.CurrencyCode " +
+                            "inner join Payments p on p.OrderID = o.ID " +
+                            "inner join PaymentMethods pm on pm.PaymentMethod = p.PaymentMethod " +
+                            "where c.Description = '" + currency + "' AND " +
+                            "pm.PaymentMethod = '" + paymentMethod + "' AND " +
+                            "o.OrderCreatedOn " +
+                            "BETWEEN dateadd(hour, - " + time + ", o.OrderCreatedOn) " +
+                            "AND o.OrderCreatedOn " +
+                            "group by o.id " +
+                            "having sum(o.Amount * c.ExchangeRateToEuro) >= " + amount;
+                        console.log(query);
+                    }
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async fireQuery(query) {
+        // sqlRequest.query(query, (err, rs) => {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         console.log(rs);
+        //     }
+        // });
+        // sqlRequest.query(query, (err, rs) => {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         console.log(rs);
+        //     }
+        // })
     }
 };
