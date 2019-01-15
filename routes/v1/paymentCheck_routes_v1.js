@@ -16,9 +16,10 @@ router.get('/', (req, res) => {
 });
 
 // Update payment check
-router.put('/', (req, res) => {
+router.put('/:checkID', (req, res) => {
     let paymentCheck = req.body;
-    paymentCheckRepo.updatePaymentCheck(paymentCheck.checkId, paymentCheck.checkName, paymentCheck.amount, paymentCheck.currency, paymentCheck.time, paymentCheck.paymentMethod, "PUT", res);
+    let checkID = req.params.checkID;
+    paymentCheckRepo.updatePaymentCheck(checkID, paymentCheck.checkName, paymentCheck.amount, paymentCheck.currency, paymentCheck.time, paymentCheck.paymentMethod, "PUT", res);
 });
 
 // Delete payment check

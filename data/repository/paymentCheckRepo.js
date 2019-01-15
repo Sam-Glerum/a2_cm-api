@@ -33,8 +33,11 @@ module.exports = class PaymentCheckRepo {
         const reqUrl = '/api/paymentchecks';
 
         await paymentCheck.find({}, function (err, docs) {
-            res.status(200).json(new jsonModel(reqUrl, httpMethod, 200, docs));
-        })
+            res.status(200).json({
+                response: new jsonModel(reqUrl, httpMethod, 200, "GET all payment checks"),
+                paymentChecks: docs
+                })
+            })
             .catch((error) => {
                 console.log(error);
                 res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, payment check has not been updated"))
@@ -51,7 +54,7 @@ module.exports = class PaymentCheckRepo {
                 res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Internal server error"))
             }
             else if (amount != null && currency != null && time != null && paymentMethod != null) {
-                docs.checkName = checkName,
+                docs.checkName = checkName;
                 docs.amount = amount;
                 docs.currency = currency;
                 docs.time = time;
