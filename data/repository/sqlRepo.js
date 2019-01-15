@@ -97,7 +97,7 @@ module.exports = class sqlRepo {
                         }
                     }
                     query += "mcc.Description = '" + category + "'";
-                    sqlRepo.fireQuery(query);
+                    this.fireQuery(query);
                 }
             })
         } catch (error) {
@@ -123,7 +123,7 @@ module.exports = class sqlRepo {
                             "where c.Description = '" + currency + "' AND " +
                             "pm.PaymentMethod = '" + paymentMethod + "' AND " +
                             "o.amount >= " + amount;
-                        console.log(query);
+                        // console.log(query);
                     } else {
                         let query = "select o.ID " +
                             "from Orders o " +
@@ -137,7 +137,7 @@ module.exports = class sqlRepo {
                             "AND o.OrderCreatedOn " +
                             "group by o.id " +
                             "having sum(o.Amount * c.ExchangeRateToEuro) >= " + amount;
-                        console.log(query);
+                        // console.log(query);
                     }
                 }
             })
@@ -147,19 +147,13 @@ module.exports = class sqlRepo {
     }
 
     static async fireQuery(query) {
-        // sqlRequest.query(query, (err, rs) => {
-        //     if (err) {
-        //         console.log(err);
-        //     } else {
-        //         console.log(rs);
-        //     }
-        // });
-        // sqlRequest.query(query, (err, rs) => {
-        //     if (err) {
-        //         console.log(err);
-        //     } else {
-        //         console.log(rs);
-        //     }
-        // })
+        const newSqlRequest = new sql.Request();
+        await newSqlRequest.query(query, (error, recordSet) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(recordSet.recordset);
+            }
+        });
     }
 };
