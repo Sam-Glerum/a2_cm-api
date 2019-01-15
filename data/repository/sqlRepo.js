@@ -124,7 +124,7 @@ module.exports = class sqlRepo {
                             "pm.PaymentMethod = '" + paymentMethod + "' AND " +
                             "o.amount >= " + amount;
                         console.log(query);
-                    } else if (time !== 0) {
+                    } else {
                         let query = "select o.ID " +
                             "from Orders o " +
                             "inner join Currencies c on o.Currency = c.CurrencyCode " +
