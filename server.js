@@ -39,7 +39,7 @@ mongoose.connection.once('open', () => {
 
 // Establish a connection with the cm-a2 SQL database (hosted on Azure)
 sqlConnection.connectToSqlDb();
-sqlRepo.fireMerchantChecksOnSql();
+// sqlRepo.fireMerchantChecksOnSql();
 sqlRepo.firePaymentChecksOnSql();
 
 /*

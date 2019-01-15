@@ -123,6 +123,7 @@ module.exports = class sqlRepo {
                             "where c.Description = '" + currency + "' AND " +
                             "pm.PaymentMethod = '" + paymentMethod + "' AND " +
                             "o.amount >= " + amount;
+                        this.fireQuery(query);
                         // console.log(query);
                     } else {
                         let query = "select o.ID " +
@@ -137,6 +138,7 @@ module.exports = class sqlRepo {
                             "AND o.OrderCreatedOn " +
                             "group by o.id " +
                             "having sum(o.Amount * c.ExchangeRateToEuro) >= " + amount;
+                        this.fireQuery(query);
                         // console.log(query);
                     }
                 }
@@ -146,14 +148,28 @@ module.exports = class sqlRepo {
         }
     }
 
+    static async insertIntoTable(query) {
+        const newSqlRequest = new sql.Request();
+
+        await newSqlRequest.query(query);
+    }
+
     static async fireQuery(query) {
         const newSqlRequest = new sql.Request();
-        await newSqlRequest.query(query, (error, recordSet) => {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log(recordSet.recordset);
-            }
-        });
+        try {
+            await newSqlRequest.query(query, (error, recordSet) => {
+                if (error) {
+                    console.log(error);
+                } else {
+                    for (let i = 0; i < recordSet.recordset.length; i++) {
+                        this.insertIntoTable(
+                            "INSERT INTO Alerts(Id) VALUES(" + recordSet.recordset[i].ID + ");"
+                        );
+                    }
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 };
