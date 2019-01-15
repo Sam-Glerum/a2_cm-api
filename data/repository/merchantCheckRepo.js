@@ -5,7 +5,7 @@ const merchantCheck = require('../schema/merchantCheck');
 
 module.exports = class MerchantCheckRepo {
 
-    static async createMerchantCheck(countries, category, httpMethod, res) {
+    static async createMerchantCheck(checkName, countries, category, httpMethod, res) {
         const reqUrl = '/api/merchantchecks';
 
         if (countries.isNullOrUndefined || category.isNullOrUndefined) {
@@ -13,6 +13,7 @@ module.exports = class MerchantCheckRepo {
         }
 
         const newMerchantCheck = new merchantCheck({
+            checkName: checkName,
             countries: countries,
             category: category
         });
@@ -40,7 +41,7 @@ module.exports = class MerchantCheckRepo {
             });
     }
 
-    static async updateMerchantCheck(checkID, countries, category, httpMethod, res) {
+    static async updateMerchantCheck(checkID, checkName, countries, category, httpMethod, res) {
         const reqUrl = '/api/merchantchecks';
 
         await merchantCheck.findOne({_id: checkID}, function (err, docs) {
@@ -50,6 +51,7 @@ module.exports = class MerchantCheckRepo {
                 res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Internal server error"))
             }
             else if (countries != null && category != null) {
+                docs.checkName = checkName;
                 docs.countries = countries;
                 docs.category = category;
                 docs.save()
