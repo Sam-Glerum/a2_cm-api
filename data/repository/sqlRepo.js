@@ -80,7 +80,7 @@ module.exports = class sqlRepo {
 
     static async fireMerchantChecksOnSql() {
         try {
-            await merchantCheck.find({}, function (err, docs) {
+            await merchantCheck.find({}, (err, docs) => {
                 for (let check in docs) {
                     const countries = docs[check].countries;
                     const category = docs[check].category;
@@ -107,7 +107,7 @@ module.exports = class sqlRepo {
 
     static async firePaymentChecksOnSql() {
         try {
-            await paymentCheck.find({}, function (err, docs) {
+            await paymentCheck.find({}, (err, docs) => {
                 for (let check in docs) {
                     const amount = docs[check].amount;
                     const currency = docs[check].currency;
