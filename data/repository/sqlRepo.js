@@ -3,13 +3,13 @@ const sql = require('mssql');
 // Response model imports
 const jsonModel = require('../../models/response/JsonModel');
 const merchantCheck = require('../schema/merchantCheck');
+const merchantCheckRepo = require('../../data/repository/merchantCheckRepo');
 const paymentCheck = require('../schema/paymentCheck');
-
-const sqlRequest = new sql.Request();
 
 module.exports = class sqlRepo {
 
     static async getAllItemsFromSQL(response, requestUrl, httpMethod, query, table) {
+        const sqlRequest = new sql.Request();
         try {
             await sqlRequest.query(query, (error, recordSet) => {
                 if (error) {
@@ -44,6 +44,7 @@ module.exports = class sqlRepo {
     }
 
     static async getSingleItemFromSQL(response, requestUrl, httpMethod, query, table, itemID) {
+        const sqlRequest = new sql.Request();
         try {
             await sqlRequest.query(query, (error, recordSet) => {
                 if (error) {
@@ -78,12 +79,45 @@ module.exports = class sqlRepo {
         }
     }
 
+    static async insertIntoTable(query) {
+        const sqlRequest = new sql.Request();
+
+        await sqlRequest.query(query, (error, recordSet) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("Insert into table: " + recordSet.recordset);
+            }
+        });
+    }
+
+    static async fireQuery(query, mongoCheckID) {
+        const sqlRequest = new sql.Request();
+        try {
+            await sqlRequest.query(query, (error, recordSet) => {
+                if (error) {
+                    console.log(error);
+                } else {
+                    //
+                    for (let item in recordSet.recordset) {
+                        this.insertIntoTable("INSERT INTO Alerts(Id, controle) VALUES('" + recordSet.recordset[item].ID + ",'" + mongoCheckID + "')" );
+                        console.log(i);
+                    }
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    // Get all the orders on which merchant checks are triggered
     static async fireMerchantChecksOnSql() {
         try {
             await merchantCheck.find({}, (err, docs) => {
                 for (let check in docs) {
                     const countries = docs[check].countries;
                     const category = docs[check].category;
+                    const mongoCheckID = docs[check]._id;
                     let query =
                         "Select o.ID " +
                         "From Orders o " +
@@ -97,7 +131,7 @@ module.exports = class sqlRepo {
                         }
                     }
                     query += "mcc.Description = '" + category + "'";
-                    this.fireQuery(query);
+                    sqlRepo.fireQuery(query, mongoCheckID);
                 }
             })
         } catch (error) {
@@ -105,14 +139,18 @@ module.exports = class sqlRepo {
         }
     }
 
+    // Get all the orders on which payment checks are triggered
     static async firePaymentChecksOnSql() {
         try {
-            await paymentCheck.find({}, (err, docs) => {
+            await paymentCheck.find({}, function (err, docs) {
                 for (let check in docs) {
+
+                    const mongoCheckID = docs[check]._id;
+                    const checkName = docs[check].checkName;
                     const amount = docs[check].amount;
                     const currency = docs[check].currency;
                     const time = docs[check].time;
-                    const paymentMethod = docs[check].paymentMethod
+                    const paymentMethod = docs[check].paymentMethod;
                     if (time === 0) {
                         let query =
                             "select o.ID " +
@@ -123,8 +161,7 @@ module.exports = class sqlRepo {
                             "where c.Description = '" + currency + "' AND " +
                             "pm.PaymentMethod = '" + paymentMethod + "' AND " +
                             "o.amount >= " + amount;
-                        this.fireQuery(query);
-                        // console.log(query);
+                        sqlRepo.fireQuery(query, mongoCheckID);
                     } else {
                         let query = "select o.ID " +
                             "from Orders o " +
@@ -138,8 +175,7 @@ module.exports = class sqlRepo {
                             "AND o.OrderCreatedOn " +
                             "group by o.id " +
                             "having sum(o.Amount * c.ExchangeRateToEuro) >= " + amount;
-                        this.fireQuery(query);
-                        // console.log(query);
+                        sqlRepo.fireQuery(query, mongoCheckID);
                     }
                 }
             })
@@ -147,29 +183,5 @@ module.exports = class sqlRepo {
             console.log(error);
         }
     }
-
-    static async insertIntoTable(query) {
-        const newSqlRequest = new sql.Request();
-
-        await newSqlRequest.query(query);
-    }
-
-    static async fireQuery(query) {
-        const newSqlRequest = new sql.Request();
-        try {
-            await newSqlRequest.query(query, (error, recordSet) => {
-                if (error) {
-                    console.log(error);
-                } else {
-                    for (let i = 0; i < recordSet.recordset.length; i++) {
-                        this.insertIntoTable(
-                            "INSERT INTO Alerts(Id) VALUES(" + recordSet.recordset[i].ID + ");"
-                        );
-                    }
-                }
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    }
 };
+
