@@ -28,7 +28,7 @@ before((done) => {
         });
 });
 
-let token;
+let token = '';
 let testUser;
 
 const TEST_USER_NAME = 'tester';
@@ -43,9 +43,9 @@ beforeEach((done) => {
             password: TEST_USER_PASS
         });
 
-        token = '';
-
         testUser.save()
+            .then(() => {
+            })
             .then(() => {
                 chai.request(server)
                     .post('/api/login')
@@ -54,7 +54,8 @@ beforeEach((done) => {
                         password: TEST_USER_PASS
                     })
                     .end((err, res) => {
-                        token = res.body.token;
+                        token = res.token;
+                        console.log(res.body);
                         done();
                     });
             });
