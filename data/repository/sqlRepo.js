@@ -100,7 +100,8 @@ module.exports = class sqlRepo {
                 } else {
                     //
                     for (let item in recordSet.recordset) {
-                        this.insertIntoTable("INSERT INTO Alerts(Id, controle) VALUES('" + recordSet.recordset[item].ID + ",'" + mongoCheckID + "')" );
+                        this.insertIntoTable("INSERT INTO Alerts(id, controle) VALUES('" + recordSet.recordset[item].ID + "','" + mongoCheckID + "')" );
+                        console.log(mongoCheckID);
                         console.log(i);
                     }
                 }
@@ -115,9 +116,9 @@ module.exports = class sqlRepo {
         try {
             await merchantCheck.find({}, (err, docs) => {
                 for (let check in docs) {
+                    const mongoCheckID = docs[check]._id;
                     const countries = docs[check].countries;
                     const category = docs[check].category;
-                    const mongoCheckID = docs[check]._id;
                     let query =
                         "Select o.ID " +
                         "From Orders o " +
@@ -131,6 +132,7 @@ module.exports = class sqlRepo {
                         }
                     }
                     query += "mcc.Description = '" + category + "'";
+
                     sqlRepo.fireQuery(query, mongoCheckID);
                 }
             })
