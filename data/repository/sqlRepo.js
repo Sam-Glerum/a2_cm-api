@@ -98,11 +98,8 @@ module.exports = class sqlRepo {
                 if (error) {
                     console.log(error);
                 } else {
-                    //
                     for (let item in recordSet.recordset) {
-                        this.insertIntoTable("INSERT INTO Alerts(id, controle) VALUES('" + recordSet.recordset[item].ID + "','" + mongoCheckID + "')" );
-                        console.log(mongoCheckID);
-                        console.log(i);
+                        this.insertIntoTable("INSERT INTO Alerts VALUES(" + recordSet.recordset[item].ID + ", 0,'" + mongoCheckID + "')" );
                     }
                 }
             });
