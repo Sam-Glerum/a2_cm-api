@@ -7,7 +7,7 @@ const merchantCheckRepo = require('../../data/repository/merchantCheckRepo');
 // Create merchant check
 router.post('/', (req, res) => {
     let merchantCheck = req.body;
-    merchantCheckRepo.createMerchantCheck(merchantCheck.countries, merchantCheck.category, "POST", res);
+    merchantCheckRepo.createMerchantCheck(merchantCheck.checkName, merchantCheck.countries, merchantCheck.category, "POST", res);
 });
 
 //Read merchant check
@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 // Update merchant check
 router.put('/', (req, res) => {
     let merchantCheck = req.body;
-    merchantCheckRepo.updateMerchantCheck(merchantCheck.checkId, merchantCheck.countries, merchantCheck.category, "PUT", res);
+    merchantCheckRepo.updateMerchantCheck(merchantCheck.checkId, merchantCheck.checkName, merchantCheck.countries, merchantCheck.category, "PUT", res);
 });
 
 // Delete merchant check
