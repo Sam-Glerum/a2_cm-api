@@ -13,8 +13,10 @@ module.exports = class sqlDatabase {
                 encrypt: true
             });
             console.log('Connection with SQL database established');
+            return Promise.resolve();
         } catch (error) {
             console.log(error);
+            return Promise.reject();
         }
     }
 };

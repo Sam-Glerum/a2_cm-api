@@ -13,6 +13,8 @@ const bodyparser = require('body-parser');
 // Constant declarations -
 const port = process.env.PORT || 3000;
 
+const sqlRepo = require('./data/repository/sqlRepo');
+
 // Set environment
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').load();
@@ -36,8 +38,23 @@ mongoose.connection.once('open', () => {
 });
 
 // Establish a connection with the cm-a2 SQL database (hosted on Azure)
-sqlConnection.connectToSqlDb();
+async function sqlSetup() {
+    await sqlConnection.connectToSqlDb()
+        .then(() => {
+            sqlRepo.fireMerchantChecksOnSql()
+                .then(() => {
+                    sqlRepo.firePaymentChecksOnSql();
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }).catch((error) => {
+            console.log(error);
+        });
+}
 
+sqlSetup();
+// sqlRepo.firePaymentChecksOnSql();
 /*
 Loading routes
 */
@@ -70,6 +87,7 @@ server.use('/api/checks', require('./routes/v1/check_routes_v1'));
 // Load Payment Method routes
 server.use('/api/paymentMethods', require('./routes/v1/paymentMethod_routes_v1'));
 
+
 server.get("/", (req, res) => {
     res.redirect("/api");
 });
@@ -77,6 +95,3 @@ server.get("/", (req, res) => {
 server.listen(port, () => {
     console.log("Server is running on port " + port);
 });
-
-
-

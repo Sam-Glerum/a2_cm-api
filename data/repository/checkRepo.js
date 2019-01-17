@@ -19,7 +19,7 @@ module.exports = class CheckRepo {
                     res.status(200).json({
                         response: new jsonModel(reqUrl, httpMethod, 200, "GET merchant check"),
                         type: "merchantCheck",
-                        check: merchantCheckParam[0]
+                        check: merchantCheckParam
                     })
                         .catch((error) => {
                             console.log(error);
@@ -32,7 +32,7 @@ module.exports = class CheckRepo {
                                 res.status(200).json({
                                     response: new jsonModel(reqUrl, httpMethod, 200, "GET payment check"),
                                     type: "paymentCheck",
-                                    check: paymentCheckParam[0]
+                                    check: paymentCheckParam
                                 })
                                     .catch((error) => {
                                         console.log(error);

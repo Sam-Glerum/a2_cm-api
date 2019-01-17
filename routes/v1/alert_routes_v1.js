@@ -14,16 +14,16 @@ router.get('/', (req, res) => {
     )
 });
 
-router.get('/:alertID', (req, res) => {
-    let alertID = req.params.alertID;
+router.get('/:checkID', (req, res) => {
+    let checkID = req.params.checkID;
 
     sqlRepo.getSingleItemFromSQL(
         res,
-        '/api/alerts/' + alertID,
+        '/api/alerts/' + checkID,
         'GET',
-        'select * from Alerts where ID = ' + alertID,
+        "select * from Alerts where controle = '" + checkID + "'",
         'Alerts',
-        alertID
+        checkID
     )
 });
 
