@@ -102,7 +102,7 @@ module.exports = class sqlRepo {
                         // this.insertIntoTable("INSERT INTO Alerts VALUES(" + recordSet.recordset[item].ID + ", 0,'" + mongoCheckID + "')" );
                         let query = "merge into Alerts T1 " +
                             "using (select " +
-                            + recordSet.recordset[item].ID + " id, " +
+                            +recordSet.recordset[item].ID + " id, " +
                             "0 issolved, " +
                             "'" + mongoCheckID + "' " +
                             "controle) T2 on (T1.id = T2.id and T1.controle = T2.controle) " +
@@ -165,9 +165,11 @@ module.exports = class sqlRepo {
                             "inner join Currencies c on o.Currency = c.CurrencyCode " +
                             "inner join Payments p on p.OrderID = o.ID " +
                             "inner join PaymentMethods pm on pm.PaymentMethod = p.PaymentMethod " +
-                            "where c.Description = '" + currency + "' AND " +
-                            "pm.PaymentMethod = '" + paymentMethod + "' AND " +
-                            "o.amount >= " + amount;
+                            "where c.Description = '" + currency + "' AND ";
+                        if (!paymentMethod !== 'all' || !paymentMethod !== undefined || !paymentMethod !== null) {
+                            query += "pm.PaymentMethod = '" + paymentMethod + "' AND ";
+                        }
+                        query = +"o.amount >= " + amount;
                         sqlRepo.fireQuery(query, mongoCheckID);
                     } else {
                         let query = "select o.ID " +
@@ -175,9 +177,11 @@ module.exports = class sqlRepo {
                             "inner join Currencies c on o.Currency = c.CurrencyCode " +
                             "inner join Payments p on p.OrderID = o.ID " +
                             "inner join PaymentMethods pm on pm.PaymentMethod = p.PaymentMethod " +
-                            "where c.Description = '" + currency + "' AND " +
-                            "pm.PaymentMethod = '" + paymentMethod + "' AND " +
-                            "o.OrderCreatedOn " +
+                            "where c.Description = '" + currency + "' AND ";
+                        if (paymentMethod !== 'all' || !paymentMethod !== undefined || !paymentMethod !== null) {
+                            query += "pm.PaymentMethod = '" + paymentMethod + "' AND ";
+                        }
+                        query += "o.OrderCreatedOn " +
                             "BETWEEN dateadd(hour, - " + time + ", o.OrderCreatedOn) " +
                             "AND o.OrderCreatedOn " +
                             "group by o.id " +
