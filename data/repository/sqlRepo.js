@@ -64,7 +64,7 @@ module.exports = class sqlRepo {
                         200,
                         "GET item " + itemID + " from " + table
                     ),
-                    items: recordSet.recordset
+                    items: recordSet.recordset[0]
                 })
             })
 

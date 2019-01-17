@@ -2,6 +2,8 @@
 const express = require('express');
 const server = express();
 const cors = require('cors');
+// Cron import (Task scheduling
+const cron = require('node-cron');
 // Database imports
 const mongoose = require('mongoose');
 const sql = require('mssql');
@@ -39,21 +41,23 @@ mongoose.connection.once('open', () => {
 
 // Establish a connection with the cm-a2 SQL database (hosted on Azure)
 async function sqlSetup() {
-    await sqlConnection.connectToSqlDb()
-        .then(() => {
-            sqlRepo.fireMerchantChecksOnSql()
-                .then(() => {
-                    sqlRepo.firePaymentChecksOnSql();
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-        }).catch((error) => {
-            console.log(error);
-        });
+    sqlConnection.connectToSqlDb();
 }
 
 sqlSetup();
+
+cron.schedule('* * * * *', async function()  {
+    console.log("testing cron");
+    await sqlRepo.fireMerchantChecksOnSql()
+
+        .then(() => {
+            console.log("testing cron 2");
+            sqlRepo.firePaymentChecksOnSql()
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+});
 // sqlRepo.firePaymentChecksOnSql();
 /*
 Loading routes
