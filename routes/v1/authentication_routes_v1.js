@@ -10,10 +10,14 @@ const checkObjects = require('../../models/validation/CheckObjects');
 // Repository imports
 const userRepo = require('../../data/repository/userRepo');
 // Encryption import
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 // Salt rounds
 const BCRYPT_SALT_ROUNDS = 12;
 
+router.use("/", (req, res, next) => {
+    res.contentType("application/json");
+    next();
+});
 
 // Route that is accessed by all requests to check if the user is authenticated to the server
 router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {

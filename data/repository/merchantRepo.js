@@ -13,7 +13,7 @@ module.exports = class orderRepo {
         await sqlRequest.query('select * from Merchants', (error, recordSet) => {
             if (error) {
                 console.log(error);
-                res.status(404).json(reqUrl, httpMethod, 404, "No merchants found");
+                res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No merchants found"));
             }
 
             res.status(200).json({
