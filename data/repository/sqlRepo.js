@@ -133,11 +133,15 @@ module.exports = class sqlRepo {
                         "where ";
                     for (let i in countries) {
                         if (!isNaN(i)) {
-                            query += "c.Name = '" + countries[i] + "' AND "
+                            query += "c.Name = '" + countries[i] + "' "
                         }
                     }
-                    query += "mcc.Description = '" + category + "'";
-
+                    if (category !== undefined && countries !== undefined){
+                        query += " AND ";
+                    }
+                    if (category === 'all' || category === undefined || category === null) {
+                        query += "mcc.Description = '" + category + "'";
+                    }
                     sqlRepo.fireQuery(query, mongoCheckID);
                 }
             })
