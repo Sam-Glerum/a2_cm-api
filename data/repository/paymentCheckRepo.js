@@ -38,9 +38,10 @@ module.exports = class PaymentCheckRepo {
                 paymentChecks: docs
                 })
             })
+
             .catch((error) => {
                 console.log(error);
-                res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, payment check has not been updated"))
+                res.status(500).json(new jsonModel(reqUrl, httpMethod, 500, "Something went wrong, no payment checks found"))
             });
     }
 

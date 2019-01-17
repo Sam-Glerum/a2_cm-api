@@ -16,9 +16,10 @@ router.get('/', (req, res) => {
 });
 
 // Update merchant check
-router.put('/', (req, res) => {
+router.put('/:checkID', (req, res) => {
     let merchantCheck = req.body;
-    merchantCheckRepo.updateMerchantCheck(merchantCheck.checkId, merchantCheck.checkName, merchantCheck.countries, merchantCheck.category, "PUT", res);
+    let checkID = req.params.checkID;
+    merchantCheckRepo.updateMerchantCheck(checkID, merchantCheck.checkName, merchantCheck.countries, merchantCheck.category, "PUT", res);
 });
 
 // Delete merchant check

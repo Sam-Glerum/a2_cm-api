@@ -19,11 +19,11 @@ module.exports = class CheckRepo {
                     res.status(200).json({
                         response: new jsonModel(reqUrl, httpMethod, 200, "GET merchant check"),
                         type: "merchantCheck",
-                        check: merchantCheckParam
+                        check: merchantCheckParam[0]
                     })
-                        .catch((error) => {
-                            console.log(error);
-                        })
+                        // .catch((error) => {
+                        //     console.log(error);
+                        // })
                 } else {
                     paymentCheck.find({_id: checkID})
                         .then((paymentCheckParam) => {
@@ -32,15 +32,15 @@ module.exports = class CheckRepo {
                                 res.status(200).json({
                                     response: new jsonModel(reqUrl, httpMethod, 200, "GET payment check"),
                                     type: "paymentCheck",
-                                    check: paymentCheckParam
+                                    check: paymentCheckParam[0]
                                 })
-                                    .catch((error) => {
-                                        console.log(error);
-                                        res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No checks found"));
-                                    })
                             } else {
                                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No checks found"));
                             }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No checks found"));
                         })
                 }
             });

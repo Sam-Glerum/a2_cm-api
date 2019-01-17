@@ -17,6 +17,7 @@
     "moment": "^2.23.0",
     "mongoose": "^5.4.0",
     "mssql": "^4.3.0",
+    "node-cron": "^2.0.3",
     "nodemon": "^1.18.9"
   },
   "devDependencies": {},
