@@ -21,9 +21,9 @@ module.exports = class CheckRepo {
                         type: "merchantCheck",
                         check: merchantCheckParam[0]
                     })
-                        .catch((error) => {
-                            console.log(error);
-                        })
+                        // .catch((error) => {
+                        //     console.log(error);
+                        // })
                 } else {
                     paymentCheck.find({_id: checkID})
                         .then((paymentCheckParam) => {
@@ -34,13 +34,13 @@ module.exports = class CheckRepo {
                                     type: "paymentCheck",
                                     check: paymentCheckParam[0]
                                 })
-                                    .catch((error) => {
-                                        console.log(error);
-                                        res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No checks found"));
-                                    })
                             } else {
                                 res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No checks found"));
                             }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            res.status(404).json(new jsonModel(reqUrl, httpMethod, 404, "No checks found"));
                         })
                 }
             });
