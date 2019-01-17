@@ -81,12 +81,9 @@ module.exports = class sqlRepo {
 
     static async insertIntoTable(query) {
         const sqlRequest = new sql.Request();
-
         await sqlRequest.query(query, (error, recordSet) => {
             if (error) {
                 console.log(error);
-            } else {
-                console.log("Insert into table: " + recordSet.recordset);
             }
         });
     }
@@ -99,13 +96,13 @@ module.exports = class sqlRepo {
                     console.log(error);
                 } else {
                     for (let item in recordSet.recordset) {
-                        // this.insertIntoTable("INSERT INTO Alerts VALUES(" + recordSet.recordset[item].ID + ", 0,'" + mongoCheckID + "')" );
+
                         let query = "merge into Alerts T1 " +
                             "using (select " +
-                            + recordSet.recordset[item].ID + " id, " +
+                            recordSet.recordset[item].ID + " id, " +
                             "0 issolved, " +
                             "'" + mongoCheckID + "' " +
-                            "controle) T2 on (T1.id = T2.id and T1.controle = T2.controle) " +
+                            "controle) T2 on (T1.id = T2.id) " +
                             "when not matched then insert(id, issolved, controle) values(T2.id, T2.issolved, T2.controle);";
                         this.insertIntoTable(query);
                     }
@@ -124,6 +121,7 @@ module.exports = class sqlRepo {
                     const mongoCheckID = docs[check]._id;
                     const countries = docs[check].countries;
                     const category = docs[check].category;
+                    let hasCountries = false;
                     let query =
                         "Select o.ID " +
                         "From Orders o " +
@@ -133,11 +131,16 @@ module.exports = class sqlRepo {
                         "where ";
                     for (let i in countries) {
                         if (!isNaN(i)) {
-                            query += "c.Name = '" + countries[i] + "' AND "
+                            hasCountries = true;
+                            query += "c.Name = '" + countries[i] + "' "
                         }
                     }
-                    query += "mcc.Description = '" + category + "'";
-
+                    if (category !== 'all' && hasCountries === true){
+                        query += " AND ";
+                    }
+                    if (category !== 'all' || category === undefined || category === null) {
+                        query += "mcc.Description = '" + category + "'";
+                    }
                     sqlRepo.fireQuery(query, mongoCheckID);
                 }
             })
@@ -151,9 +154,7 @@ module.exports = class sqlRepo {
         try {
             await paymentCheck.find({}, function (err, docs) {
                 for (let check in docs) {
-
                     const mongoCheckID = docs[check]._id;
-                    const checkName = docs[check].checkName;
                     const amount = docs[check].amount;
                     const currency = docs[check].currency;
                     const time = docs[check].time;
@@ -165,9 +166,11 @@ module.exports = class sqlRepo {
                             "inner join Currencies c on o.Currency = c.CurrencyCode " +
                             "inner join Payments p on p.OrderID = o.ID " +
                             "inner join PaymentMethods pm on pm.PaymentMethod = p.PaymentMethod " +
-                            "where c.Description = '" + currency + "' AND " +
-                            "pm.PaymentMethod = '" + paymentMethod + "' AND " +
-                            "o.amount >= " + amount;
+                            "where c.Description = '" + currency + "' AND ";
+                        if (!paymentMethod !== 'all' || !paymentMethod !== undefined || !paymentMethod !== null) {
+                            query += "pm.PaymentMethod = '" + paymentMethod + "' AND ";
+                        }
+                        query += "o.amount >= " + amount;
                         sqlRepo.fireQuery(query, mongoCheckID);
                     } else {
                         let query = "select o.ID " +
@@ -175,9 +178,11 @@ module.exports = class sqlRepo {
                             "inner join Currencies c on o.Currency = c.CurrencyCode " +
                             "inner join Payments p on p.OrderID = o.ID " +
                             "inner join PaymentMethods pm on pm.PaymentMethod = p.PaymentMethod " +
-                            "where c.Description = '" + currency + "' AND " +
-                            "pm.PaymentMethod = '" + paymentMethod + "' AND " +
-                            "o.OrderCreatedOn " +
+                            "where c.Description = '" + currency + "' AND ";
+                        if (paymentMethod !== 'all' || !paymentMethod !== undefined || !paymentMethod !== null) {
+                            query += "pm.PaymentMethod = '" + paymentMethod + "' AND ";
+                        }
+                        query += "o.OrderCreatedOn " +
                             "BETWEEN dateadd(hour, - " + time + ", o.OrderCreatedOn) " +
                             "AND o.OrderCreatedOn " +
                             "group by o.id " +
