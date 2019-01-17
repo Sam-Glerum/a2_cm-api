@@ -99,7 +99,15 @@ module.exports = class sqlRepo {
                     console.log(error);
                 } else {
                     for (let item in recordSet.recordset) {
-                        this.insertIntoTable("INSERT INTO Alerts VALUES(" + recordSet.recordset[item].ID + ", 0,'" + mongoCheckID + "')" );
+                        // this.insertIntoTable("INSERT INTO Alerts VALUES(" + recordSet.recordset[item].ID + ", 0,'" + mongoCheckID + "')" );
+                        let query = "merge into Alerts T1 " +
+                            "using (select " +
+                            + recordSet.recordset[item].ID + " id, " +
+                            "0 issolved, " +
+                            "'" + mongoCheckID + "' " +
+                            "controle) T2 on (T1.id = T2.id and T1.controle = T2.controle) " +
+                            "when not matched then insert(id, issolved, controle) values(T2.id, T2.issolved, T2.controle);";
+                        this.insertIntoTable(query);
                     }
                 }
             });
@@ -150,7 +158,7 @@ module.exports = class sqlRepo {
                     const currency = docs[check].currency;
                     const time = docs[check].time;
                     const paymentMethod = docs[check].paymentMethod;
-                    if (time === 0) {
+                    if (time === 0 || time === undefined || time === null) {
                         let query =
                             "select o.ID " +
                             "from Orders o " +
