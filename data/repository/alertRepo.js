@@ -8,7 +8,7 @@ const sqlRequest = new sql.Request();
 
 module.exports = class alertRepo {
 
-    static async getAllALerts(httpMethod, res) {
+    static async getAllAlerts(httpMethod, res) {
         const reqUrl = '/api/alerts';
 
         await sqlRequest.query('select * from Alerts', (error, recordSet) => {
