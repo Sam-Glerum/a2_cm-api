@@ -31,35 +31,28 @@ before((done) => {
 let token = '';
 let testUser;
 
-const TEST_USER_NAME = 'tester';
-const TEST_USER_PASS = 'soepersiekret';
+const TEST_USER_NAME = 'cmtester';
+const TEST_USER_MAIL = 'cmtester@cm.nl';
+const TEST_USER_PASS = 'S3CR3T';
 
-beforeEach((done) => {
+before((done) => {
+    chai.request(server)
+        .post('/api/register')
+        .send({
+            username: TEST_USER_NAME,
+            email: TEST_USER_MAIL,
+            password: TEST_USER_PASS
+        })
+        .end((err, res) => {
+            done();
+        });
+});
+
+after((done) => {
     const { users } = mongoose.connection.collections;
     users.drop(() => {
-        testUser = new User({
-            username: TEST_USER_NAME,
-            email: 'tester@test.com',
-            password: TEST_USER_PASS
-        });
-
-        testUser.save()
-            .then(() => {
-            })
-            .then(() => {
-                chai.request(server)
-                    .post('/api/login')
-                    .send({
-                        username: TEST_USER_NAME,
-                        password: TEST_USER_PASS
-                    })
-                    .end((err, res) => {
-                        token = res.token;
-                        console.log(res.body);
-                        done();
-                    });
-            });
-    })
+        done();
+    });
 });
 
 module.exports = {
