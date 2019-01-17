@@ -170,7 +170,7 @@ module.exports = class sqlRepo {
                         if (!paymentMethod !== 'all' || !paymentMethod !== undefined || !paymentMethod !== null) {
                             query += "pm.PaymentMethod = '" + paymentMethod + "' AND ";
                         }
-                        query = +"o.amount >= " + amount;
+                        query += "o.amount >= " + amount;
                         sqlRepo.fireQuery(query, mongoCheckID);
                     } else {
                         let query = "select o.ID " +
@@ -187,7 +187,6 @@ module.exports = class sqlRepo {
                             "AND o.OrderCreatedOn " +
                             "group by o.id " +
                             "having sum(o.Amount * c.ExchangeRateToEuro) >= " + amount;
-                        console.log(query);
                         sqlRepo.fireQuery(query, mongoCheckID);
                     }
                 }
