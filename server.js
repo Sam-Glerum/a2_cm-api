@@ -46,7 +46,7 @@ async function sqlSetup() {
 
 sqlSetup();
 
-cron.schedule('* * * * *', async function()  {
+cron.schedule('00 59 * * * *', async function()  {
     console.log("testing cron");
     await sqlRepo.fireMerchantChecksOnSql()
 
