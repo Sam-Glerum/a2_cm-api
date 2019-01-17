@@ -11,7 +11,7 @@ chai.should();
 chai.use(chaiHttp);
 
 // TEST input
-const TEST_ORDER_ID = '498499090'; // <-- change this value
+const TEST_ORDER_ID = '498570766'; // <-- change this value
 
 let token = helper.token; // <-- change this value by import
 
