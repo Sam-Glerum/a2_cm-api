@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 
 router.get('/:orderID', (req, res) => {
     let orderId = req.params.orderID;
-//oude query
+
     let query = " SELECT Orders.*, Payments.*, Merchants.Name, Merchants.City, Merchants.Country, Merchants.OrganizationID, Merchants.MerchantCategoryCode\n" +
         "FROM Orders\n" +
         "join Payments on Orders.ID = Payments.OrderID\n" +
@@ -27,7 +27,7 @@ router.get('/:orderID', (req, res) => {
         res,
         '/api/orders/' + orderId,
         'GET',
-        query,
+        'select * from Orders where ID = ' + orderId,
         'Orders'
     )
 });
