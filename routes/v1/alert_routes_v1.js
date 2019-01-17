@@ -21,7 +21,9 @@ router.get('/:checkID', (req, res) => {
         res,
         '/api/alerts/' + checkID,
         'GET',
-        "select * from Alerts where controle = '" + checkID + "'",
+        "SELECT * FROM Alerts" +
+        "JOIN Order ON Alerts.ID = Order.ID" +
+        "WHERE controle = '" + checkID + "'",
         'Alerts',
         checkID
     )
